@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starters Practice Tests</title>
+<style>
+:root{--ink:#2b2b2b;--brand:#5b3a8c;--brand2:#7d5bb5;--soft:#f3eefb;--ok:#27ae60;--bad:#e74c3c;--line:#d9d2e6}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:var(--ink);background:#ebe7f2}
+header{position:sticky;top:0;z-index:20;background:var(--brand);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.hrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1100px;margin:0 auto;padding:10px 16px}
+.logo{font-weight:800;font-size:20px;letter-spacing:.3px;margin-right:auto}
+.logo small{display:block;font-weight:400;font-size:11px;opacity:.8;letter-spacing:0}
+.tabs{display:flex;gap:6px}
+.ttab,.stab{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer}
+.ttab.on,.stab.on{background:#fff;color:var(--brand)}
+.score{font-size:13px;background:rgba(0,0,0,.18);padding:6px 12px;border-radius:14px;white-space:nowrap}
+.score b{font-size:15px}
+.reset{background:none;border:1px solid rgba(255,255,255,.6);color:#fff;border-radius:14px;padding:6px 10px;cursor:pointer;font-size:12px}
+#paper{max-width:1100px;margin:18px auto 60px;padding:0 12px}
+.cover{background:#fff;border-radius:10px;padding:18px 24px;margin-bottom:16px;border-left:8px solid var(--brand)}
+.cover h2{margin:0 0 6px;color:var(--brand)}
+.cover p{margin:0;line-height:1.5}
+.part{background:#fff;border-radius:10px;padding:20px 24px 16px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.part-head{display:flex;align-items:baseline;gap:12px;border-bottom:3px solid var(--brand);padding-bottom:6px;margin-bottom:8px}
+.pnum{font-size:24px;font-weight:800;color:var(--brand)}
+.pq{font-size:14px;color:#666}
+.instr{font-weight:700;font-size:17px;margin:6px 0 14px}
+.pfoot{display:flex;align-items:center;gap:10px;margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--brand2)}
+.btn.ghostbtn{background:#fff;color:var(--brand);border:2px solid var(--brand)}
+.btn.big{font-size:17px;padding:13px 26px}
+.res{font-size:20px;font-weight:800;color:var(--bad)}
+.res.good{color:var(--ok)}
+.endbar{text-align:center;margin:24px 0}
+.sub{font-weight:700;color:var(--brand);margin:12px 0 6px;font-size:15px}
+.qn{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--brand);font-weight:800;font-size:14px;margin-right:8px;flex:none}
+.qn:empty{display:none}
+svg{display:block}
+svg .o{stroke:#2b2b2b;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.scenebox{border:3px solid var(--ink);border-radius:6px;overflow:hidden;background:#fff}
+.scenebox svg{width:100%;height:auto}
+/* audio bar */
+.aud{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--soft);border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.audlab{font-size:13px;color:#555;margin-left:10px}
+.seg{border:2px solid var(--brand);background:#fff;color:var(--brand);border-radius:50%;width:36px;height:36px;font-weight:800;cursor:pointer}
+.seg.playing,.play.playing{background:#f39c12;border-color:#f39c12;color:#fff}
+/* L1 */
+.l1{position:relative;user-select:none}
+.names{display:flex;justify-content:space-around;gap:10px;padding:10px 0;flex-wrap:wrap}
+.chip{border:3px solid var(--ink);background:#fff;border-radius:8px;padding:8px 18px;font-weight:800;font-size:18px;cursor:grab;touch-action:none}
+.chip.exchip{background:#eee;cursor:default}
+.chip.sel{background:#fde9b5}
+.chip.ok{background:#d4f5df;border-color:var(--ok)} .chip.bad{background:#fbd5d1;border-color:var(--bad)}
+svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ln{stroke:#2b6cd4;stroke-width:4;stroke-linecap:round}
+.ln.ex{stroke:#555}
+.ln.temp{stroke:#f39c12;stroke-dasharray:8 6}
+.ln.good{stroke:var(--ok)} .ln.wrong{stroke:var(--bad)}
+.dot{fill:#2b2b2b}
+.tgt{cursor:pointer}
+/* L2 / lists */
+.l2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:22px;align-items:start}
+.l2pic svg,.r5pic svg{width:100%;height:auto;border:3px solid var(--ink);border-radius:6px}
+.qrow{display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid #f0edf5;flex-wrap:wrap}
+.qt{flex:1 1 220px;font-size:16px}
+.ans{font-size:16px;display:flex;align-items:center;gap:6px}
+.filled{font-family:"Comic Sans MS","Segoe Print",cursive;color:#2b6cd4;font-size:18px;border-bottom:2px dotted #999;padding:0 10px;min-width:90px;display:inline-block;text-align:center}
+input[type=text]{font-size:17px;padding:6px 10px;border:2px solid #bbb;border-radius:6px;width:150px;font-family:inherit}
+input[type=text]:focus{outline:none;border-color:var(--brand)}
+input.ok{border-color:var(--ok);background:#e9f9ee} input.bad{border-color:var(--bad);background:#fdecea}
+/* L3 */
+.l3item{margin-bottom:18px}
+.l3q{font-weight:700;font-size:16px;margin-bottom:8px;display:flex;align-items:center}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.opt-wrap{cursor:pointer;border-radius:8px;padding:4px}
+.opt-wrap svg{width:100%;height:auto;border:3px solid var(--ink);border-radius:6px;background:#fff}
+.lbl{display:flex;justify-content:center;align-items:center;gap:8px;font-weight:800;margin-top:6px}
+.tick{width:28px;height:28px;border:3px solid var(--ink);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:20px;color:#2b6cd4;background:#fff}
+.opt-wrap.chosen .tick::after{content:"\2713"}
+.opt-wrap.ok{background:#d4f5df} .opt-wrap.bad{background:#fbd5d1}
+.opt-wrap.should .tick{border-color:var(--ok);box-shadow:0 0 0 3px #bfeccc}
+/* L4 */
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:8px;border-radius:10px;background:var(--soft)}
+.palette.pulse{outline:3px solid #f39c12}
+.crayon{display:flex;align-items:center;gap:6px;border:2px solid #ccc;background:#fff;border-radius:20px;padding:5px 12px 5px 6px;cursor:pointer;font-size:14px;font-weight:600}
+.crayon span{width:22px;height:22px;border-radius:50%;border:2px solid var(--ink)}
+.crayon.sel{border-color:var(--ink);box-shadow:0 0 0 3px #f39c12}
+.colable{cursor:pointer}
+.colable:hover .f{filter:brightness(.93)}
+.exg{cursor:default}
+.colable.ok{filter:drop-shadow(0 0 4px #27ae60) drop-shadow(0 0 4px #27ae60)}
+.colable.bad{filter:drop-shadow(0 0 4px #e74c3c) drop-shadow(0 0 4px #e74c3c)}
+/* R1 */
+.r1row{display:flex;align-items:center;gap:16px;padding:8px 0;border-bottom:1px solid #f0edf5}
+.picbox{border:3px solid var(--ink);border-radius:6px;width:180px;flex:none;background:#fff}
+.picbox svg{width:100%;height:auto}
+.r1t{flex:1;font-size:18px}
+.tickbox{width:42px;height:42px;border:3px solid var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#2b6cd4}
+.tc{display:flex;gap:8px;padding:4px;border-radius:8px}
+.tc button{width:46px;height:46px;font-size:24px;border:3px solid var(--ink);border-radius:6px;background:#fff;cursor:pointer;color:#bbb}
+.tc button.on{color:#fff;background:#2b6cd4;border-color:#2b6cd4}
+.tc.ok{background:#d4f5df} .tc.bad{background:#fbd5d1}
+/* R2 */
+.r2scene{margin-bottom:12px}
+.yn{gap:8px;padding:4px;border-radius:8px}
+.yn button{border:2px solid var(--ink);background:#fff;border-radius:6px;padding:6px 14px;font-size:16px;cursor:pointer;font-weight:600}
+.yn button.on{background:#2b6cd4;color:#fff;border-color:#2b6cd4}
+.yn.ok{background:#d4f5df} .yn.bad{background:#fbd5d1}
+/* R3 */
+.r3row{display:flex;align-items:center;gap:18px;padding:10px 0;border-bottom:1px solid #f0edf5}
+.r3row .picbox{width:130px}
+.slots{display:flex;gap:8px;padding:6px;border-radius:8px}
+.slot{width:46px;height:50px;border-bottom:4px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-family:"Comic Sans MS","Segoe Print",cursive;color:#2b6cd4;cursor:pointer}
+.slots.ok{background:#d4f5df} .slots.bad{background:#fbd5d1}
+.tiles{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.tile{width:44px;height:44px;border:3px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;background:#fff8e1;cursor:grab;touch-action:none;user-select:none}
+.tile.used{opacity:.25;pointer-events:none}
+/* R4 */
+.r4text{user-select:none;border:3px solid var(--ink);border-radius:6px;padding:14px 20px;font-size:18px;line-height:2.4}
+.r4text h3{text-align:center;margin:0 0 4px;font-size:22px}
+.r4hero svg{width:220px;margin:0 auto}
+.gap{display:inline-block;min-width:120px;border-bottom:3px dotted var(--ink);text-align:center;line-height:1.5;padding:0 8px;cursor:pointer;font-family:"Comic Sans MS","Segoe Print",cursive;color:#2b6cd4;vertical-align:baseline}
+.gap:empty::before{content:"\00a0"}
+.gap.exgap{cursor:default}
+.gap.filled{background:#fff8e1;border-bottom-style:solid}
+.gap.ok{background:#d4f5df} .gap.bad{background:#fbd5d1}
+.wordbox{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;border:3px solid var(--ink);border-radius:6px;padding:14px;margin-top:14px;user-select:none}
+.wcard{width:110px;border:2px solid var(--ink);border-radius:8px;text-align:center;padding:6px;background:#fff;cursor:grab;touch-action:none;position:relative;font-weight:700}
+.wcard .wpic{width:70px;height:70px;margin:0 auto}
+.wcard.sel{box-shadow:0 0 0 4px #f39c12}
+.wcard.used{opacity:.3}
+.wcard.excard{opacity:.45;cursor:default}
+.exlab{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;font-size:10px;padding:1px 6px;border-radius:6px}
+/* R5 */
+.r5blk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:center;margin-bottom:16px}
+/* drag ghost */
+.ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-50%) scale(1.08);opacity:.9;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.note{font-size:12px;color:#777;text-align:center;margin:30px 0}
+@media (max-width:760px){.l2,.r5blk{grid-template-columns:1fr}.picbox{width:120px}.opts{gap:6px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div class="logo">Starters Practice Tests<small>Pre A1 level &middot; unofficial practice material</small></div>
+    <div class="tabs" id="ttabs"></div>
+    <div class="tabs"><button class="stab" data-s="L">Listening</button><button class="stab" data-s="R">Reading &amp; Writing</button></div>
+    <div class="score">Listening <b id="totL">0 / 20</b> &nbsp;|&nbsp; R&amp;W <b id="totR">0 / 25</b></div>
+    <button class="reset" id="resetAll">Reset test</button>
+  </div>
+</header>
+<main id="paper"></main>
+<p class="note">Original practice material in the style of the Pre A1 Starters exam. Audio uses the browser voice (best in Chrome or Edge).</p>
+<script>
+/* =========================================================
+   ART LIBRARY - original cartoon illustrations drawn in SVG
+   Origin of every object = bottom centre. Scenes = 800 x 500.
+   Class "f"  = main fill (colourable)
+   Class "fs" = main stroke (colourable, e.g. bike frame)
+   ========================================================= */
+const K = '#2b2b2b';
+const SKIN = ['#f6cfa8', '#e8b48a', '#c98e62', '#8d5a3b'];
+const tr = (t, x, y, s = 1, flip = false) => `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">${t}</g>`;
+const R = (x, y, w, h, f, c = '', rx = 0) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${f}" class="o ${c}"/>`;
+const C = (x, y, r, f, c = '') => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" class="o ${c}"/>`;
+const E = (x, y, rx, ry, f, c = '') => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${f}" class="o ${c}"/>`;
+const P = (d, f = 'none', c = '') => `<path d="${d}" fill="${f}" class="o ${c}"/>`;
+const Ln = (x1, y1, x2, y2, w = 2.5, col = K, c = '') => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" class="${c}"/>`;
+const limb = (pts, c, w = 9) => {
+  const d = 'M' + pts.map(p => p.join(' ')).join(' L');
+  return `<path d="${d}" fill="none" stroke="${K}" stroke-width="${w + 5}" stroke-linecap="round" stroke-linejoin="round"/>` +
+         `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+};
+const TXT = (x, y, t, size = 16, col = K, extra = '') => `<text x="${x}" y="${y}" font-size="${size}" fill="${col}" font-family="Arial, sans-serif" font-weight="bold" text-anchor="middle" ${extra}>${t}</text>`;
+const hit = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#fff" fill-opacity="0.001"/>`;
+
+/* ---------------- PEOPLE ---------------- */
+function person(x, y, o = {}) {
+  const kind = o.kind || 'boy';
+  const adult = kind === 'man' || kind === 'woman';
+  const s = (o.s || 1) * (adult ? 1.25 : 1);
+  const skin = o.skin || SKIN[0], hair = o.hair || '#6b3e1e';
+  const shirt = o.shirt || '#4a90d9', legsC = o.legs || '#3b5998';
+  const pose = o.pose || 'stand', sit = pose === 'sit';
+  const hip = sit ? 0 : -50, sh = hip - 42, hy = hip - 70;
+  const legCol = o.dress ? skin : legsC;
+  let back = '', body = '', head = '', item = '';
+
+  // hair behind the head
+  if (o.hairStyle === 'long') back += P(`M-21 ${hy - 6} Q-27 ${hy + 30} -17 ${hy + 34} L17 ${hy + 34} Q27 ${hy + 30} 21 ${hy - 6} Z`, hair);
+  if (o.hairStyle === 'pony') back += E(-25, hy + 2, 7, 13, hair);
+
+  // legs
+  if (sit) {
+    body += limb([[-6, hip], [24, hip], [26, hip + 40]], legCol, 10) + E(31, hip + 42, 9, 5, '#333');
+  } else if (pose === 'run' || pose === 'kick') {
+    const fx = pose === 'kick' ? 32 : 20, fy = pose === 'kick' ? -24 : -7;
+    body += limb([[-5, hip], [-14, -26], [-22, -6]], legCol, 10) + limb([[5, hip], [fx, fy]], legCol, 10) +
+            E(-24, -4, 9, 5, '#333') + E(fx + 3, fy + 2, 9, 5, '#333');
+  } else if (pose === 'up' && o.jump) {
+    body += limb([[-7, hip], [-12, -14]], legCol, 10) + limb([[7, hip], [12, -14]], legCol, 10) + E(-13, -10, 9, 5, '#333') + E(13, -10, 9, 5, '#333');
+  } else {
+    body += limb([[-8, hip], [-9, -7]], legCol, 10) + limb([[8, hip], [9, -7]], legCol, 10) + E(-10, -4, 9, 5, '#333') + E(10, -4, 9, 5, '#333');
+  }
+
+  // torso
+  if (o.dress) body += P(`M-15 ${sh - 6} L15 ${sh - 6} L27 ${hip + 12} L-27 ${hip + 12} Z`, shirt, 'f');
+  else {
+    body += R(-18, sh - 6, 36, hip - sh + 10, shirt, 'f', 9);
+    if (!sit) body += R(-18, hip - 8, 36, 12, legsC, '', 3);
+  }
+
+  // arms: [elbow, hand] per side
+  const A = {
+    stand: [[[-22, sh + 22], [-24, hip - 4]], [[22, sh + 22], [24, hip - 4]]],
+    wave: [[[-22, sh + 22], [-24, hip - 4]], [[28, sh - 14], [30, sh - 38]]],
+    up: [[[-28, sh - 14], [-30, sh - 38]], [[28, sh - 14], [30, sh - 38]]],
+    hold: [[[-24, sh + 18], [-8, sh + 26]], [[24, sh + 18], [8, sh + 26]]],
+    holdR: [[[-22, sh + 22], [-24, hip - 4]], [[30, sh + 14], [38, sh + 2]]],
+    point: [[[-22, sh + 22], [-24, hip - 4]], [[30, sh - 2], [46, sh - 6]]],
+    run: [[[-26, sh + 14], [-32, sh + 30]], [[26, sh + 14], [32, sh - 2]]]
+  };
+  let ap = A[o.arms || pose] || A.stand;
+  if (pose === 'sit' && !o.arms) ap = A.hold;
+  if (pose === 'kick' && !o.arms) ap = A.run;
+  const [L, Rr] = ap;
+  body += limb([[-15, sh], L[0], L[1]], shirt, 9) + limb([[15, sh], Rr[0], Rr[1]], shirt, 9);
+  body += C(L[1][0], L[1][1], 5.5, skin) + C(Rr[1][0], Rr[1][1], 5.5, skin);
+
+  // head
+  head += R(-5, hy + 16, 10, 8, skin, '', 2);
+  head += C(0, hy, 20, skin);
+  if (o.sleep) head += P(`M-11 ${hy - 1} Q-7 ${hy + 3} -3 ${hy - 1}`) + P(`M3 ${hy - 1} Q7 ${hy + 3} 11 ${hy - 1}`);
+  else head += C(-7, hy - 2, 2.4, K) + C(7, hy - 2, 2.4, K);
+  if (o.mouth === 'open') head += E(0, hy + 9, 4, 5, '#a33');
+  else if (o.mouth === 'sad') head += P(`M-7 ${hy + 12} Q0 ${hy + 5} 7 ${hy + 12}`);
+  else head += P(`M-7 ${hy + 7} Q0 ${hy + 13} 7 ${hy + 7}`);
+  // hair top
+  const hs = o.hairStyle || (kind === 'girl' || kind === 'woman' ? 'long' : 'short');
+  if (hs === 'curly') {
+    for (let a = -170; a <= -10; a += 32) { const r = a * Math.PI / 180; head += C(Math.cos(r) * 19, hy + Math.sin(r) * 19, 8, hair); }
+  } else if (hs !== 'bald') {
+    head += P(`M-21 ${hy + 2} Q-22 ${hy - 25} 0 ${hy - 24} Q22 ${hy - 25} 21 ${hy + 2} Q17 ${hy - 12} 4 ${hy - 13} Q-10 ${hy - 16} -21 ${hy + 2} Z`, hair);
+  } else {
+    head += P(`M-20 ${hy + 2} Q-21 ${hy - 8} -15 ${hy - 10}`, 'none') + P(`M20 ${hy + 2} Q21 ${hy - 8} 15 ${hy - 10}`, 'none');
+  }
+  if (o.beard) head += P(`M-17 ${hy + 4} Q-14 ${hy + 28} 0 ${hy + 28} Q14 ${hy + 28} 17 ${hy + 4} Q8 ${hy + 16} 0 ${hy + 15} Q-8 ${hy + 16} -17 ${hy + 4} Z`, hair);
+  if (o.glasses) head += `<g fill="none" class="o">${C(-8, hy - 2, 6.5, 'none')}${C(8, hy - 2, 6.5, 'none')}${Ln(-1.5, hy - 2, 1.5, hy - 2)}</g>`;
+  if (o.hat) {
+    const hc = o.hat.c || '#e74c3c';
+    if (o.hat.style === 'sun') head += E(0, hy - 12, 34, 7, hc, 'f') + P(`M-17 ${hy - 13} Q-17 ${hy - 38} 0 ${hy - 38} Q17 ${hy - 38} 17 ${hy - 13} Z`, hc, 'f');
+    else head += P(`M-21 ${hy - 6} Q-21 ${hy - 32} 0 ${hy - 32} Q21 ${hy - 32} 21 ${hy - 6} Z`, hc, 'f') + P(`M14 ${hy - 9} L36 ${hy - 6} L18 ${hy - 2} Z`, hc, 'f');
+  }
+
+  // held item
+  if (o.item) {
+    const it = o.item, is = it.s || 0.55;
+    let hx, hy2;
+    if ((o.arms || pose) === 'hold' || (sit && !o.arms)) { hx = 0; hy2 = sh + 36; }
+    else { hx = Rr[1][0]; hy2 = Rr[1][1] + (it.dy || 12); }
+    item = tr(OBJ[it.k](it.c), hx, hy2, is);
+  }
+
+  // hands in world coordinates (for strings / leads)
+  const fl = o.flip ? -1 : 1;
+  person.hands = { L: [x + fl * L[1][0] * s, y + L[1][1] * s], R: [x + fl * Rr[1][0] * s, y + Rr[1][1] * s] };
+
+  let g = back + body + head + item;
+  if (o.target) g = `<g data-target="${o.target}" class="tgt">${hit(-38, hy - 34, 80, -hy + 34 + (sit ? 46 : 2))}${g}</g>`;
+  return tr(g, x, y, s, o.flip);
+}
+
+/* ---------------- OBJECTS ---------------- */
+const OBJ = {
+  ball: (c = '#e74c3c') => C(0, -20, 20, c, 'f') + P('M-20 -20 Q0 -8 20 -20') + P('M0 -40 Q-12 -20 0 0'),
+  kite: (c = '#e74c3c') => P('M0 -60 L22 -30 L0 0 L-22 -30 Z', c, 'f') + Ln(0, -60, 0, 0, 1.5) + Ln(-22, -30, 22, -30, 1.5),
+  book: (c = '#3b7dd8') => R(-24, -32, 48, 32, c, 'f', 3) + R(-16, -24, 32, 8, '#fff', '', 2),
+  openBook: (c = '#3b7dd8') => P('M-26 0 L-26 -24 Q-13 -30 0 -24 Q13 -30 26 -24 L26 0 Q13 -6 0 0 Q-13 -6 -26 0Z', '#fff') + Ln(0, -24, 0, 0, 1.5) + P('M-26 0 L-28 2 L28 2 L26 0', c, 'f'),
+  apple: (c = '#e43b3b') => C(0, -18, 17, c, 'f') + P('M0 -34 Q1 -40 4 -44') + P('M3 -38 Q12 -46 17 -38 Q9 -33 3 -38Z', '#5cb85c'),
+  banana: (c = '#f7d038') => P('M-24 -28 Q-20 0 24 -6 Q28 -9 24 -12 Q-8 -8 -16 -30 Z', c, 'f') + R(-28, -34, 6, 7, '#7a5a2a', '', 2),
+  orange: (c = '#f39c12') => C(0, -18, 18, c, 'f') + P('M0 -36 Q8 -44 14 -38 Q8 -32 0 -36Z', '#5cb85c'),
+  pear: (c = '#b5d33d') => P('M0 -46 Q9 -46 9 -32 Q21 -20 15 -6 Q0 4 -15 -6 Q-21 -20 -9 -32 Q-9 -46 0 -46Z', c, 'f') + P('M0 -46 Q2 -52 5 -54'),
+  lemon: (c = '#f5e050') => E(0, -15, 23, 14, c, 'f') + P('M23 -15 L28 -16') + P('M-23 -15 L-28 -14'),
+  grapes: (c = '#8e44ad') => [[-12, -34], [0, -34], [12, -34], [-6, -24], [6, -24], [0, -13]].map(p => C(p[0], p[1], 8, c, 'f')).join('') + P('M0 -42 Q2 -50 8 -52'),
+  cake: (c = '#f6a6c1') => R(-30, -30, 60, 30, c, 'f', 4) + P('M-30 -24 Q-22 -16 -15 -24 Q-8 -16 0 -24 Q8 -16 15 -24 Q22 -16 30 -24 L30 -30 L-30 -30Z', '#fff') + R(-3, -46, 6, 16, '#5dade2') + E(0, -51, 3, 5, '#f39c12'),
+  icecream: (c = '#f6a6c1') => P('M-10 -24 L0 0 L10 -24Z', '#e0a96d') + C(0, -31, 11, c, 'f'),
+  egg: (c = '#fff8e7') => E(0, -16, 12, 16, c, 'f'),
+  burger: () => P('M-26 -22 Q-26 -44 0 -44 Q26 -44 26 -22Z', '#e0a050', 'f') + R(-28, -22, 56, 6, '#6ab04c', '', 3) + R(-26, -16, 52, 8, '#7a4024', '', 3) + R(-26, -8, 52, 8, '#e0a050', '', 4),
+  glass: (c = '#f39c12') => P('M-12 -38 L12 -38 L9 0 L-9 0Z', '#eef7fb') + P('M-11 -26 L11 -26 L9 0 L-9 0Z', c, 'f'),
+  chair: (c = '#c0874f') => R(-20, -38, 6, 38, c, 'f') + R(14, -38, 6, 38, c, 'f') + R(-24, -46, 48, 8, c, 'f', 2) + R(-22, -94, 6, 48, c, 'f') + R(16, -94, 6, 48, c, 'f') + R(-22, -94, 44, 16, c, 'f', 3),
+  table: (c = '#c0874f') => R(-72, -66, 8, 66, c, 'f') + R(64, -66, 8, 66, c, 'f') + R(-82, -76, 164, 10, c, 'f', 2),
+  desk: (c = '#c0874f') => R(-44, -56, 7, 56, c, 'f') + R(37, -56, 7, 56, c, 'f') + R(-52, -64, 104, 9, c, 'f', 2),
+  bed: (c = '#5dade2') => R(-84, -36, 168, 22, '#a0703e') + R(-84, -80, 14, 80, '#a0703e', '', 3) + R(80, -50, 10, 50, '#a0703e', '', 3) + R(-70, -48, 150, 12, '#fff') + R(-30, -54, 110, 22, c, 'f', 4) + E(-50, -54, 16, 7, '#fff'),
+  sofa: (c = '#d35454') => R(-90, -84, 180, 44, c, 'f', 12) + R(-90, -48, 180, 30, c, 'f', 6) + R(-102, -66, 22, 52, c, 'f', 8) + R(80, -66, 22, 52, c, 'f', 8) + R(-90, -16, 8, 16, '#6b4226') + R(82, -16, 8, 16, '#6b4226'),
+  lamp: (c = '#f4d03f') => E(0, -4, 16, 5, '#888') + R(-3, -90, 6, 86, '#999') + P('M-24 -86 L24 -86 L14 -120 L-14 -120Z', c, 'f'),
+  clock: () => C(0, -22, 22, '#fff') + Ln(0, -22, 0, -36, 3) + Ln(0, -22, 10, -22, 3) + C(0, -22, 2, K),
+  tv: (c = '#555') => R(-42, -58, 84, 52, c, 'f', 4) + R(-35, -51, 70, 38, '#9fd3f0') + R(-10, -6, 20, 6, '#555'),
+  computer: (c = '#d0d6dd') => R(-30, -62, 60, 42, c, 'f', 3) + R(-25, -57, 50, 32, '#9fd3f0') + R(-5, -20, 10, 10, c) + R(-34, -10, 68, 10, c, '', 2),
+  tree: (c = '#5aa845') => R(-10, -70, 20, 70, '#8b5a2b') + C(-30, -92, 30, c, 'f') + C(30, -92, 30, c, 'f') + C(0, -118, 40, c, 'f'),
+  flower: (c = '#e84393') => Ln(0, 0, 0, -40, 3, '#3c8d2f') + P('M0 -18 Q12 -28 16 -18 Q8 -12 0 -18Z', '#5cb85c') + [0, 72, 144, 216, 288].map(a => { const r = a * Math.PI / 180; return C(Math.cos(r) * 9, -46 + Math.sin(r) * 9, 7, c, 'f'); }).join('') + C(0, -46, 6, '#f7d038'),
+  car: (c = '#e74c3c') => P('M-52 -14 L-52 -34 L-30 -37 L-18 -56 L22 -56 L36 -37 L52 -33 L52 -14 Z', c, 'f') + P('M-14 -52 L-24 -37 L-2 -37 L-2 -52Z', '#cfe8f7') + P('M4 -52 L4 -37 L30 -37 L20 -52Z', '#cfe8f7') + C(-28, -12, 12, '#333') + C(28, -12, 12, '#333') + C(-28, -12, 4, '#bbb') + C(28, -12, 4, '#bbb'),
+  bus: (c = '#f1c40f') => R(-74, -74, 148, 62, c, 'f', 8) + [-62, -32, -2, 28].map(x => R(x, -66, 24, 20, '#cfe8f7', '', 2)).join('') + R(52, -66, 14, 44, '#cfe8f7', '', 2) + C(-44, -12, 12, '#333') + C(44, -12, 12, '#333'),
+  bike: (c = '#2e86de') => C(-28, -18, 17, 'none') + C(28, -18, 17, 'none') + C(-28, -18, 3, K) + C(28, -18, 3, K) +
+        `<g stroke="${c}" stroke-width="5" stroke-linecap="round" fill="none" class="fs">` +
+        `<path d="M-28 -18 L-2 -18 L-10 -46 Z M-10 -46 L20 -46 L-2 -18 M20 -46 L28 -18"/></g>` +
+        Ln(20, -46, 16, -58, 3) + Ln(10, -58, 22, -58, 4) + R(-18, -52, 16, 6, '#333', '', 3),
+  boat: (c = '#e74c3c') => P('M-50 -24 L50 -24 L36 0 L-36 0Z', c, 'f') + Ln(0, -24, 0, -92, 3) + P('M3 -90 L40 -32 L3 -32Z', '#fff'),
+  hat: (c = '#e67e22') => E(0, -6, 34, 8, c, 'f') + P('M-18 -8 Q-18 -32 0 -32 Q18 -32 18 -8Z', c, 'f') + R(-18, -14, 36, 5, '#fff'),
+  bag: (c = '#16a085') => P('M-13 -34 Q-13 -50 0 -50 Q13 -50 13 -34', 'none') + R(-24, -34, 48, 34, c, 'f', 6) + R(-10, -24, 20, 10, '#fff', '', 2),
+  shoe: (c = '#c0392b') => P('M-24 0 L-24 -15 Q-20 -24 -10 -21 L-3 -12 Q14 -12 24 -6 L24 0Z', c, 'f') + R(-26, -3, 52, 5, '#fff', '', 2),
+  sock: (c = '#9b59b6') => P('M-6 -42 L10 -42 L10 -14 Q10 0 -4 0 L-22 0 Q-30 -8 -18 -13 L-6 -16Z', c, 'f') + R(-6, -42, 16, 7, '#fff'),
+  tshirt: (c = '#27ae60') => P('M-14 -42 L-32 -33 L-25 -21 L-17 -25 L-17 0 L17 0 L17 -25 L25 -21 L32 -33 L14 -42 Q0 -33 -14 -42Z', c, 'f'),
+  guitar: (c = '#e67e22') => R(-3, -76, 6, 40, '#7a4b25') + C(0, -36, 13, c, 'f') + C(0, -16, 17, c, 'f') + C(0, -22, 4.5, '#333') + R(-5, -82, 10, 8, '#7a4b25', '', 2),
+  balloon: (c = '#e74c3c') => P('M0 0 Q-6 -20 0 -42', 'none') + E(0, -60, 15, 19, c, 'f') + P('M-3 -40 L3 -40 L0 -43Z', c, 'f'),
+  box: (c = '#d9a066') => R(-26, -38, 52, 38, c, 'f') + P('M-26 -38 L-34 -50 L-6 -50 L0 -38', c, 'f') + P('M26 -38 L34 -50 L6 -50 L0 -38', c, 'f'),
+  camera: (c = '#555') => R(-20, -26, 40, 26, c, 'f', 4) + C(0, -13, 9, '#9fd3f0') + R(-12, -32, 12, 6, c, '', 2),
+  robot: (c = '#9fb6cd') => Ln(0, -64, 0, -74, 2.5) + C(0, -76, 3, '#e74c3c') + R(-14, -64, 28, 20, c, 'f', 3) + C(-6, -55, 3, K) + C(6, -55, 3, K) + R(-18, -42, 36, 28, c, 'f', 3) + R(-8, -34, 16, 8, '#f1c40f') + R(-14, -14, 9, 14, c, 'f') + R(5, -14, 9, 14, c, 'f') + R(-26, -40, 8, 20, c, 'f', 3) + R(18, -40, 8, 20, c, 'f', 3),
+  shell: (c = '#f8b9a0') => P('M0 0 L-19 -14 Q-17 -32 0 -34 Q17 -32 19 -14 Z', c, 'f') + Ln(0, 0, -10, -30, 1.5) + Ln(0, 0, 0, -33, 1.5) + Ln(0, 0, 10, -30, 1.5),
+  pencil: (c = '#f1c40f') => P('M-32 -10 L20 -10 L32 -5 L20 0 L-32 0Z', c, 'f') + P('M20 -10 L32 -5 L20 0Z', '#f5d6a8') + R(-36, -10, 6, 10, '#f78fb3'),
+  watch: (c = '#2c3e50') => R(-7, -44, 14, 44, c, 'f', 3) + C(0, -22, 11, '#fff') + Ln(0, -22, 0, -29, 2) + Ln(0, -22, 5, -22, 2),
+  fishbowl: () => E(0, -26, 28, 26, '#cfe9f7') + R(-14, -54, 28, 6, '#cfe9f7', '', 2),
+  sandwich: () => P('M-26 0 L0 -36 L26 0Z', '#f5deb3') + P('M-22 -4 L0 -32 L22 -4', 'none') + R(-24, -6, 48, 6, '#6ab04c', '', 2),
+  legsIcon: () => limb([[-8, -44], [-9, -6]], '#3b5998', 10) + limb([[8, -44], [9, -6]], '#3b5998', 10) + E(-10, -4, 9, 5, '#333') + E(10, -4, 9, 5, '#333'),
+  eyeIcon: () => P('M-26 -18 Q0 -42 26 -18 Q0 6 -26 -18Z', '#fff') + C(0, -18, 10, '#5d9cec') + C(0, -18, 4, K),
+  water: () => R(-30, -30, 60, 30, '#7ec8f0', '', 4) + P('M-26 -20 Q-19 -26 -12 -20 Q-5 -14 2 -20 Q9 -26 16 -20 Q22 -15 26 -20', 'none'),
+  grass: () => [-20, -6, 8, 20].map(x => P(`M${x - 6} 0 Q${x} -30 ${x + 2} -34 Q${x + 2} -14 ${x + 6} 0Z`, '#5aa845')).join(''),
+  beach: () => R(-32, -34, 64, 18, '#7ec8f0') + R(-32, -16, 64, 16, '#f4d58d') + C(18, -40, 8, '#f7d038'),
+  garden: () => R(-32, -10, 64, 10, '#7cc56b') + tr(OBJ.flower('#e84393'), -14, -8, 0.55) + tr(OBJ.flower('#f39c12'), 2, -8, 0.6) + tr(OBJ.flower('#9b59b6'), 18, -8, 0.5),
+  tail: (c = '#8b5a2b') => P('M4 -56 Q-26 -36 -12 0 Q-2 -18 8 -10 Q-4 -30 14 -52Z', c, 'f'),
+  bench: (c = '#a0522d') => R(-52, -40, 7, 40, '#555') + R(45, -40, 7, 40, '#555') + R(-50, -70, 5, 30, '#555') + R(45, -70, 5, 30, '#555') + R(-62, -72, 124, 10, c, 'f', 2) + R(-62, -46, 124, 9, c, 'f', 2),
+  bowl: (c = '#5dade2') => Ln(6, -36, 16, -14, 3, '#a0703e') + P('M-26 -22 Q-26 0 0 0 Q26 0 26 -22Z', c, 'f') + R(-28, -24, 56, 4, c, '', 2),
+  house: (c = '#f5e3c1') => R(-40, -60, 80, 60, c, 'f') + P('M-50 -58 L0 -96 L50 -58Z', '#c0392b') + R(-10, -30, 20, 30, '#a0703e') + R(-34, -50, 18, 16, '#bfe6fb') + R(16, -50, 18, 16, '#bfe6fb'),
+  notes: () => P('M0 0 L0 -20 L10 -24 L10 -6') + C(-3, 0, 4, K) + C(7, -6, 4, K)
+};
+
+/* ---------------- ANIMALS (face right) ---------------- */
+Object.assign(OBJ, {
+  cat: (c = '#f39c12') => P('M-22 -16 Q-40 -20 -36 -40', 'none') + `<path d="M-22 -16 Q-40 -20 -36 -40" stroke="${c}" stroke-width="5" fill="none" class="fs"/>` +
+       R(-16, -14, 6, 14, c, 'f', 2) + R(8, -14, 6, 14, c, 'f', 2) + E(0, -20, 22, 13, c, 'f') +
+       P('M12 -40 L14 -54 L22 -44Z', c, 'f') + P('M26 -44 L32 -54 L34 -40Z', c, 'f') + C(23, -36, 12, c, 'f') + C(19, -38, 1.8, K) + C(27, -38, 1.8, K) + P('M21 -32 L23 -30 L25 -32'),
+  dog: (c = '#c68642') => P('M-24 -26 Q-34 -34 -30 -42', 'none') + R(-22, -16, 7, 16, c, 'f', 2) + R(12, -16, 7, 16, c, 'f', 2) + E(-2, -24, 26, 13, c, 'f') +
+       C(24, -40, 14, c, 'f') + E(36, -36, 6, 5, c, 'f') + C(40, -38, 3, K) + C(24, -43, 2, K) + E(14, -36, 5, 10, '#7a4b25'),
+  bird: (c = '#3498db') => Ln(-2, 0, -2, -6, 2) + Ln(4, 0, 4, -6, 2) + E(0, -16, 15, 11, c, 'f') + P('M-14 -16 L-26 -22 L-24 -10Z', c, 'f') + C(10, -26, 8, c, 'f') + P('M17 -27 L25 -24 L17 -22Z', '#f39c12') + C(12, -28, 1.6, K) + P('M-6 -18 Q2 -10 8 -16', 'none'),
+  fish: (c = '#f39c12') => P('M-20 -15 L-34 -26 L-34 -4Z', c, 'f') + E(0, -15, 22, 13, c, 'f') + C(12, -18, 2.2, K) + P('M-4 -24 Q2 -15 -4 -6', 'none'),
+  duck: (c = '#f7d038') => E(-2, -16, 20, 13, c, 'f') + C(14, -32, 10, c, 'f') + P('M22 -32 L34 -30 L22 -27Z', '#f39c12') + C(16, -34, 1.8, K) + P('M-12 -18 Q-2 -10 6 -18', 'none') + Ln(-4, -3, -4, 2, 2, '#f39c12') + Ln(4, -3, 4, 2, 2, '#f39c12'),
+  frog: (c = '#6ab04c') => E(0, -14, 22, 14, c, 'f') + C(-10, -28, 7, c, 'f') + C(10, -28, 7, c, 'f') + C(-10, -29, 3, K) + C(10, -29, 3, K) + P('M-10 -14 Q0 -8 10 -14') + E(-20, -2, 9, 4, c, 'f') + E(20, -2, 9, 4, c, 'f'),
+  mouse: (c = '#a0a4a8') => P('M-18 -8 Q-36 -2 -38 -16', 'none') + E(0, -11, 18, 11, c, 'f') + C(10, -24, 7, c, 'f') + C(16, -18, 8, c, 'f') + C(20, -18, 1.8, K) + C(25, -15, 2, '#f78fb3'),
+  spider: (c = '#2b2b2b') => [-1, 1].map(d => [0, 1, 2, 3].map(i => Ln(0, -16, d * 22, -28 + i * 9, 2.5)).join('')).join('') + E(0, -16, 12, 10, c, 'f') + C(-4, -18, 2, '#fff') + C(4, -18, 2, '#fff'),
+  snake: (c = '#27ae60') => `<path d="M-40 -8 Q-28 -24 -14 -8 Q0 8 14 -8 Q24 -20 32 -14" stroke="${K}" stroke-width="15" fill="none" stroke-linecap="round"/><path d="M-40 -8 Q-28 -24 -14 -8 Q0 8 14 -8 Q24 -20 32 -14" stroke="${c}" stroke-width="10" fill="none" stroke-linecap="round" class="fs"/>` + C(34, -15, 8, c, 'f') + C(36, -18, 1.8, K),
+  horse: (c = '#a0522d') => R(-30, -40, 8, 40, c, 'f', 2) + R(-14, -40, 8, 40, c, 'f', 2) + R(10, -40, 8, 40, c, 'f', 2) + R(24, -40, 8, 40, c, 'f', 2) +
+       P('M-36 -52 Q-50 -40 -46 -22', 'none') + E(0, -52, 38, 18, c, 'f') + P('M24 -60 L36 -92 L50 -84 L36 -56Z', c, 'f') + P('M36 -92 L58 -82 Q64 -76 56 -72 L42 -76Z', c, 'f') + C(46, -84, 2, K) + P('M30 -92 Q24 -76 26 -62', 'none', '') + P('M34 -94 L36 -102 L40 -93Z', c, 'f')
+});
+
+/* ---------------- BACKGROUNDS & HELPERS ---------------- */
+const svg = (inner, vb = '0 0 800 500', cls = 'scene') => `<svg viewBox="${vb}" class="${cls}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+const cloud = (x, y, s = 1) => tr(C(0, 0, 18, '#fff') + C(22, -8, 22, '#fff') + C(46, 0, 18, '#fff') + R(0, 0, 46, 18, '#fff') + `<rect x="1" y="-6" width="44" height="22" fill="#fff"/>`, x, y, s);
+const sunAt = (x, y, s = 1) => tr([0, 45, 90, 135, 180, 225, 270, 315].map(a => { const r = a * Math.PI / 180; return Ln(Math.cos(r) * 32, Math.sin(r) * 32, Math.cos(r) * 44, Math.sin(r) * 44, 4, '#f5b041'); }).join('') + C(0, 0, 26, '#f7d038'), x, y, s);
+const windowAt = (x, y, w, h, sky = '#bfe6fb') => R(x, y, w, h, '#fff', '', 3) + R(x + 6, y + 6, w - 12, h - 12, sky) + Ln(x + w / 2, y + 6, x + w / 2, y + h - 6, 4, '#fff') + Ln(x + 6, y + h / 2, x + w - 6, y + h / 2, 4, '#fff') + R(x + 6, y + 6, w - 12, h - 12, 'none');
+const doorAt = (x, y, w = 70, h = 150, c = '#a0703e') => R(x, y, w, h, c, '', 3) + C(x + w - 12, y + h / 2, 4, '#f1c40f');
+const bgPark = () => R(0, 0, 800, 260, '#cdeefd', '', 0) + cloud(90, 70) + cloud(520, 50, 0.8) + sunAt(720, 70, 0.9) + R(0, 240, 800, 260, '#9fd67a') + P('M330 500 Q380 360 470 300 Q520 270 600 250 L640 250 Q560 280 520 320 Q440 390 430 500Z', '#f2dfb0');
+const bgRoom = (wall = '#fdf2d0', floor = '#e3b779') => R(0, 0, 800, 340, wall) + R(0, 340, 800, 160, floor) + R(0, 334, 800, 10, '#fff');
+const bgBeach = () => R(0, 0, 800, 220, '#cdeefd') + cloud(120, 60) + sunAt(680, 70, 0.9) + R(0, 200, 800, 110, '#7ec8f0') + P('M0 220 Q40 212 80 220 Q120 228 160 220 Q200 212 240 220 Q280 228 320 220 Q360 212 400 220 Q440 228 480 220 Q520 212 560 220 Q600 228 640 220 Q680 212 720 220 Q760 228 800 220', 'none') + P('M0 300 Q200 280 400 300 Q600 320 800 296 L800 500 L0 500Z', '#f4d58d');
+const bgGarden = () => R(0, 0, 800, 300, '#cdeefd') + cloud(560, 60) + R(0, 120, 330, 200, '#f5e3c1') + P('M-10 130 L165 30 L340 130Z', '#c0392b') + windowAt(30, 170, 90, 70) + R(0, 270, 800, 230, '#9fd67a') +
+  [...Array(12)].map((_, i) => R(350 + i * 38, 220, 22, 70, '#fff', '', 3)).join('') + R(340, 236, 460, 10, '#fff') + R(340, 268, 460, 10, '#fff');
+const bgClass = () => bgRoom('#e8f4e8', '#d8b483') + R(250, 60, 300, 150, '#2f6b4f', '', 4) + R(242, 52, 316, 166, 'none') + R(250, 208, 300, 8, '#a0703e');
+const bgKitchen = () => bgRoom('#fff6e0', '#cfd8dc') + [...Array(10)].map((_, i) => [...Array(3)].map((_, j) => R(380 + i * 42, 150 + j * 42, 42, 42, '#e8f6f3', '', 0)).join('')).join('') + R(380, 276, 420, 64, '#a0703e') + R(370, 268, 440, 12, '#ecf0f1');
+const panel = (inner, bg = '#fff') => svg(R(0, 0, 200, 150, bg, '', 6) + inner, '0 0 200 150', 'opt');
+
+/* =========================================================
+   ENGINE - rendering, interaction, speech, scoring
+   ========================================================= */
+const COLOURS = {
+  red: '#e74c3c', blue: '#3b7dd8', green: '#27ae60', yellow: '#f7d038', orange: '#f39c12',
+  pink: '#f78fb3', purple: '#8e44ad', brown: '#8b5a2b', black: '#2b2b2b', grey: '#95a5a6'
+};
+const NUMS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20 };
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const h = (tag, cls = '', html = '') => { const e = document.createElement(tag); if (cls) e.className = cls; if (html) e.innerHTML = html; return e; };
+const col = (id, inner, box) => `<g data-col="${id}" class="colable">${box ? hit(...box) : ''}${inner}</g>`;
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function norm(s) {
+  s = String(s).toLowerCase().replace(/[.,!?'"]/g, '').replace(/\s+/g, ' ').trim();
+  s = s.replace(/^(a|an|the|some|her|his|their|my) /, '');
+  if (NUMS[s] !== undefined) s = String(NUMS[s]);
+  return s;
+}
+const matches = (val, answers) => answers.some(a => norm(val) === norm(a));
+
+/* ---------------- SPEECH (browser voice) ---------------- */
+const TTS = { voices: [], token: 0, keep: [] };
+function loadVoices() { TTS.voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if (window.speechSynthesis) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function pickVoices() {
+  const all = TTS.voices.filter(v => /^en/i.test(v.lang));
+  const pool = all.length ? all : TTS.voices;
+  const gbFirst = arr => arr.slice().sort((a, b) => (/GB/i.test(b.lang) - /GB/i.test(a.lang)));
+  const fem = gbFirst(pool.filter(v => /female|woman|libby|sonia|serena|kate|hazel|susan|mia|martha|samantha|karen|moira|tessa|fiona|victoria|zira|aria|jenny|emma|amy|natasha|ava|allison/i.test(v.name)));
+  const male = gbFirst(pool.filter(v => !/female/i.test(v.name) && /male|daniel|george|ryan|oliver|arthur|thomas|david|guy|alex|fred|mark|james|brian|eric|christopher|rishi|aaron/i.test(v.name)));
+  const any = gbFirst(pool)[0] || null;
+  return { f: fem[0] || any, m: male[0] || any };
+}
+const ROLE = {
+  N: { v: 'm', pitch: 0.95, rate: 0.88 },   // narrator
+  M: { v: 'm', pitch: 1.0, rate: 0.9 },     // man
+  F: { v: 'f', pitch: 1.05, rate: 0.9 },    // woman
+  B: { v: 'm', pitch: 1.55, rate: 0.95 },   // boy
+  G: { v: 'f', pitch: 1.5, rate: 0.95 }     // girl
+};
+function stopAudio() { TTS.token++; if (window.speechSynthesis) speechSynthesis.cancel(); $$('.aud .playing').forEach(b => b.classList.remove('playing')); }
+function sayLine(line, token) {
+  return new Promise(res => {
+    if (token !== TTS.token || !window.speechSynthesis) return res();
+    const m = line.match(/^([NMFBG]):\s*(.*)$/); const role = ROLE[m ? m[1] : 'N']; const text = m ? m[2] : line;
+    const vv = pickVoices(); const u = new SpeechSynthesisUtterance(text);
+    const voice = vv[role.v]; if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'en-GB';
+    u.pitch = role.pitch; u.rate = role.rate;
+    let done = false; const fin = () => { if (!done) { done = true; setTimeout(res, 280); } };
+    u.onend = fin; u.onerror = fin; TTS.keep.push(u); if (TTS.keep.length > 50) TTS.keep.shift();
+    speechSynthesis.speak(u);
+    setTimeout(fin, 1500 + text.length * 110); // safety if onend never fires
+  });
+}
+const wait = (ms, token) => new Promise(r => setTimeout(r, token === TTS.token ? ms : 0));
+async function playSegments(segs, btns, opts = {}) {
+  stopAudio(); const token = TTS.token;
+  if (!window.speechSynthesis) { alert('This browser has no voice. Please use Chrome or Edge.'); return; }
+  for (const seg of segs) {
+    if (token !== TTS.token) return;
+    const b = btns && btns[seg.label]; if (b) b.classList.add('playing');
+    if (opts.announce && seg.label) await sayLine('N: ' + (seg.label === 'Example' ? 'Example.' : 'Number ' + seg.label + '.'), token);
+    for (const l of seg.lines) { if (token !== TTS.token) return; await sayLine(l, token); }
+    if (b) b.classList.remove('playing');
+    await wait(opts.pause || 0, token);
+  }
+}
+
+/* ---------------- DRAG HELPER ---------------- */
+function dragger(el, { onDrop, onClick, onMove, ghost = true }) {
+  el.addEventListener('pointerdown', e => {
+    if (el.classList.contains('locked')) return;
+    e.preventDefault();
+    const sx = e.clientX, sy = e.clientY; let moved = false, g = null;
+    const move = ev => {
+      if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) {
+        moved = true;
+        if (ghost) { g = el.cloneNode(true); g.classList.add('ghost'); document.body.appendChild(g); }
+      }
+      if (moved) { if (g) { g.style.left = ev.clientX + 'px'; g.style.top = ev.clientY + 'px'; } onMove && onMove(ev); }
+    };
+    const up = ev => {
+      window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up);
+      if (moved) { if (g) g.remove(); onDrop && onDrop(document.elementFromPoint(ev.clientX, ev.clientY), ev); }
+      else onClick && onClick();
+    };
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+  });
+}
+
+/* ---------------- PART SHELL ---------------- */
+function partShell(num, instr, qs = 5) {
+  const sec = h('section', 'part');
+  sec.innerHTML = `<div class="part-head"><span class="pnum">Part ${num}</span><span class="pq">&ndash; ${qs} questions &ndash;</span></div><p class="instr">${instr}</p>`;
+  const body = h('div', 'pbody'); sec.appendChild(body);
+  const foot = h('div', 'pfoot', `<button class="btn chk">Check answers</button><button class="btn ghostbtn rst">Try again</button><span class="res"></span>`);
+  sec.appendChild(foot);
+  return { sec, body, foot };
+}
+function audioBar(part) {
+  const bar = h('div', 'aud');
+  const btns = {};
+  const play = h('button', 'btn play', '&#9654; Play Part'); const stop = h('button', 'btn ghostbtn', '&#9632; Stop');
+  bar.appendChild(play); bar.appendChild(stop);
+  bar.appendChild(h('span', 'audlab', 'Listen again:'));
+  part.segs.forEach(s => { const b = h('button', 'seg', s.label === 'Example' ? 'Ex' : s.label); b.title = 'Repeat ' + s.label; b.onclick = () => playSegments([s], btns); btns[s.label] = b; bar.appendChild(b); });
+  play.onclick = () => playSegments([{ label: '', lines: part.intro || INTRO[part.type] }, ...part.segs], btns, { pause: 2500, announce: true });
+  stop.onclick = stopAudio;
+  return bar;
+}
+function wireFoot(shell, check, reset) {
+  const res = $('.res', shell.foot);
+  $('.chk', shell.foot).onclick = () => { const r = check(); res.textContent = `${r.score} / ${r.max}`; res.className = 'res ' + (r.score === r.max ? 'good' : ''); shell.sec.dataset.score = r.score; shell.sec.dataset.max = r.max; updateTotals(); };
+  $('.rst', shell.foot).onclick = () => { reset(); res.textContent = ''; delete shell.sec.dataset.score; updateTotals(); };
+}
+const mark = (el, ok) => { el.classList.remove('ok', 'bad'); el.classList.add(ok ? 'ok' : 'bad'); };
+const unmark = root => $$('.ok,.bad', root).forEach(e => e.classList.remove('ok', 'bad'));
+
+/* =========================================================
+   LISTENING PART 1 - draw lines (drag names to people)
+   ========================================================= */
+function L1(part, n) {
+  const shell = partShell(n, 'Listen and draw lines. There is one example.');
+  shell.body.appendChild(audioBar(part));
+  const wrap = h('div', 'l1');
+  const top = h('div', 'names'), bot = h('div', 'names');
+  const box = h('div', 'scenebox', part.scene());
+  const lines = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); lines.setAttribute('class', 'lines');
+  wrap.append(top, box, bot, lines); shell.body.appendChild(wrap);
+  const chips = {}; let assign = {}; let selected = null;
+  part.names.forEach((nm, i) => {
+    const c = h('div', 'chip', nm); chips[nm] = c; (i < Math.ceil(part.names.length / 2) ? top : bot).appendChild(c);
+    if (nm === part.example.name) { c.classList.add('locked', 'exchip'); return; }
+    let temp = null;
+    dragger(c, {
+      ghost: false,
+      onMove: ev => {
+        const r = wrap.getBoundingClientRect(), a = anchorChip(c);
+        if (!temp) { temp = document.createElementNS('http://www.w3.org/2000/svg', 'line'); temp.setAttribute('class', 'ln temp'); lines.appendChild(temp); }
+        temp.setAttribute('x1', a[0]); temp.setAttribute('y1', a[1]); temp.setAttribute('x2', ev.clientX - r.left); temp.setAttribute('y2', ev.clientY - r.top);
+      },
+      onDrop: t => { if (temp) temp.remove(); temp = null; const tg = t && t.closest && t.closest('[data-target]'); setLink(nm, tg && wrap.contains(tg) ? tg.dataset.target : null); },
+      onClick: () => { selected = selected === nm ? null : nm; $$('.chip', wrap).forEach(x => x.classList.toggle('sel', x.textContent === selected)); }
+    });
+  });
+  box.addEventListener('click', e => {
+    if (!selected) return; const tg = e.target.closest('[data-target]'); if (!tg) return;
+    setLink(selected, tg.dataset.target); selected = null; $$('.chip', wrap).forEach(x => x.classList.remove('sel'));
+  });
+  function setLink(nm, tgt) {
+    unmark(wrap);
+    if (tgt === part.example.target) tgt = null;
+    if (tgt) for (const k in assign) if (assign[k] === tgt) delete assign[k];
+    if (tgt) assign[nm] = tgt; else delete assign[nm];
+    draw();
+  }
+  function anchorChip(c) { const r = wrap.getBoundingClientRect(), b = c.getBoundingClientRect(); const isTop = c.parentElement === top; return [b.left + b.width / 2 - r.left, (isTop ? b.bottom : b.top) - r.top]; }
+  function anchorTgt(id) { const r = wrap.getBoundingClientRect(); const t = $(`[data-target="${id}"]`, box); if (!t) return [0, 0]; const b = t.getBoundingClientRect(); return [b.left + b.width / 2 - r.left, b.top + b.height * 0.42 - r.top]; }
+  function draw() {
+    $$('line:not(.temp), circle', lines).forEach(l => l.remove());
+    if (!wrap.offsetParent) return;
+    const all = { ...assign, [part.example.name]: part.example.target };
+    for (const nm in all) {
+      const a = anchorChip(chips[nm]), b = anchorTgt(all[nm]);
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('class', 'ln' + (nm === part.example.name ? ' ex' : '') + (chips[nm].classList.contains('ok') ? ' good' : chips[nm].classList.contains('bad') ? ' wrong' : ''));
+      l.setAttribute('x1', a[0]); l.setAttribute('y1', a[1]); l.setAttribute('x2', b[0]); l.setAttribute('y2', b[1]); lines.appendChild(l);
+      const d = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); d.setAttribute('cx', b[0]); d.setAttribute('cy', b[1]); d.setAttribute('r', 5); d.setAttribute('class', 'dot'); lines.appendChild(d);
+    }
+  }
+  wrap._redraw = draw; REDRAW.push(draw);
+  wireFoot(shell, () => {
+    let s = 0;
+    for (const nm in part.answers) { const ok = assign[nm] === part.answers[nm]; if (ok) s++; mark(chips[nm], ok); }
+    draw(); return { score: s, max: 5 };
+  }, () => { assign = {}; unmark(wrap); draw(); });
+  return shell.sec;
+}
+
+/* =========================================================
+   LISTENING PART 2 - write a name or a number
+   ========================================================= */
+function L2(part, n) {
+  const shell = partShell(n, 'Read the question. Listen and write a name or a number. There are two examples.');
+  shell.body.appendChild(audioBar(part));
+  const grid = h('div', 'l2');
+  grid.appendChild(h('div', 'l2pic', part.pic()));
+  const qs = h('div', 'qlist');
+  qs.appendChild(h('div', 'sub', 'Examples'));
+  part.examples.forEach(e => qs.appendChild(h('div', 'qrow', `<span class="qt">${e.q}</span><span class="ans">${e.pre || ''}<span class="filled">${e.a}</span>${e.post || ''}</span>`)));
+  qs.appendChild(h('div', 'sub', 'Questions'));
+  const inputs = part.items.map((it, i) => {
+    const row = h('div', 'qrow', `<span class="qn">${i + 1}</span><span class="qt">${it.q}</span><span class="ans">${it.pre || ''}<input type="text" autocomplete="off" spellcheck="false">${it.post || ''}</span>`);
+    qs.appendChild(row); return $('input', row);
+  });
+  grid.appendChild(qs); shell.body.appendChild(grid);
+  wireFoot(shell, () => {
+    let s = 0; inputs.forEach((inp, i) => { const ok = matches(inp.value, part.items[i].ans); if (ok) s++; mark(inp, ok); inp.title = ok ? '' : 'Answer: ' + part.items[i].ans[0]; });
+    return { score: s, max: 5 };
+  }, () => { inputs.forEach(i => { i.value = ''; i.title = ''; }); unmark(grid); });
+  return shell.sec;
+}
+
+/* =========================================================
+   LISTENING PART 3 - tick the box (A B C)
+   ========================================================= */
+function L3(part, n) {
+  const shell = partShell(n, 'Listen and tick (&#10003;) the box. There is one example.');
+  shell.body.appendChild(audioBar(part));
+  const list = h('div', 'l3');
+  const picks = [];
+  part.items.forEach((it, i) => {
+    const blk = h('div', 'l3item');
+    blk.appendChild(h('div', 'l3q', `<span class="qn">${it.ex ? '' : i}</span>${it.q}`));
+    const row = h('div', 'opts');
+    it.opts.forEach((o, j) => {
+      const op = h('div', 'opt-wrap', `${o()}<div class="lbl">${'ABC'[j]}<span class="tick"></span></div>`);
+      if (it.ex) { if (j === it.ans) op.classList.add('chosen'); }
+      else op.onclick = () => { unmark(blk); $$('.opt-wrap', row).forEach(x => x.classList.remove('chosen')); op.classList.add('chosen'); picks[i] = j; };
+      row.appendChild(op);
+    });
+    blk.appendChild(row); list.appendChild(blk);
+  });
+  shell.body.appendChild(list);
+  wireFoot(shell, () => {
+    let s = 0;
+    part.items.forEach((it, i) => {
+      if (it.ex) return; const ok = picks[i] === it.ans; if (ok) s++;
+      const ows = $$('.opt-wrap', list.children[i]);
+      if (picks[i] !== undefined) mark(ows[picks[i]], ok);
+      if (!ok) ows[it.ans].classList.add('should');
+    });
+    return { score: s, max: 5 };
+  }, () => { picks.length = 0; $$('.opt-wrap', list).forEach(o => { if (!o.closest('.l3item').querySelector('.l3q .qn').textContent) return; o.classList.remove('chosen', 'should'); }); unmark(list); });
+  return shell.sec;
+}
+
+/* =========================================================
+   LISTENING PART 4 - listen and colour
+   ========================================================= */
+function L4(part, n) {
+  const shell = partShell(n, 'Listen and colour. There is one example.');
+  shell.body.appendChild(audioBar(part));
+  const wrap = h('div', 'l4');
+  const pal = h('div', 'palette');
+  let cur = null;
+  Object.entries(COLOURS).forEach(([name, hex]) => {
+    const b = h('button', 'crayon', `<span style="background:${hex}"></span>${name}`);
+    b.onclick = () => { cur = name; $$('.crayon', pal).forEach(x => x.classList.toggle('sel', x === b)); };
+    pal.appendChild(b);
+  });
+  const er = h('button', 'crayon', `<span style="background:#fff"></span>rubber`);
+  er.onclick = () => { cur = 'white'; $$('.crayon', pal).forEach(x => x.classList.toggle('sel', x === er)); };
+  pal.appendChild(er);
+  const box = h('div', 'scenebox', part.scene());
+  wrap.append(pal, box); shell.body.appendChild(wrap);
+  const chosen = {};
+  const paint = (g, name) => { const hex = name === 'white' ? '#ffffff' : COLOURS[name]; $$('.f', g).forEach(e => e.setAttribute('fill', hex)); $$('.fs', g).forEach(e => e.setAttribute('stroke', hex)); };
+  const exG = $(`[data-col="${part.example.id}"]`, box); paint(exG, part.example.colour); exG.classList.add('exg');
+  $$('[data-col]', box).forEach(g => {
+    if (g === exG) return;
+    g.addEventListener('click', () => {
+      if (!cur) { pal.classList.add('pulse'); setTimeout(() => pal.classList.remove('pulse'), 600); return; }
+      paint(g, cur); chosen[g.dataset.col] = cur === 'white' ? null : cur; unmark(box);
+    });
+  });
+  wireFoot(shell, () => {
+    let s = 0;
+    for (const id in part.answers) { const ok = chosen[id] === part.answers[id]; if (ok) s++; mark($(`[data-col="${id}"]`, box), ok); }
+    return { score: s, max: 5 };
+  }, () => { $$('[data-col]', box).forEach(g => { if (g !== exG) { paint(g, 'white'); delete chosen[g.dataset.col]; } }); unmark(box); });
+  return shell.sec;
+}
+
+/* =========================================================
+   READING & WRITING PART 1 - tick or cross
+   ========================================================= */
+function R1(part, n) {
+  const shell = partShell(n, 'Look and read. Put a tick (&#10003;) or a cross (&#10007;) in the box. There are two examples.');
+  const list = h('div', 'r1');
+  const draw = (it) => svg(Array.from({ length: it.n || 1 }, (_, k) => tr(OBJ[it.pic](it.c), (k + 0.5) * (240 / (it.n || 1)) - 120, 4, it.s || ((it.n || 1) > 2 ? 0.9 : 1.2))).join(''), '-125 -95 250 105', 'r1pic');
+  list.appendChild(h('div', 'sub', 'Examples'));
+  part.examples.forEach(it => list.appendChild(h('div', 'r1row', `<div class="picbox">${draw(it)}</div><div class="r1t">${it.text}</div><div class="tickbox done">${it.ok ? '&#10003;' : '&#10007;'}</div>`)));
+  list.appendChild(h('div', 'sub', 'Questions'));
+  const vals = [];
+  const boxes = part.items.map((it, i) => {
+    const row = h('div', 'r1row', `<span class="qn">${i + 1}</span><div class="picbox">${draw(it)}</div><div class="r1t">${it.text}</div><div class="tc"><button class="tk">&#10003;</button><button class="cr">&#10007;</button></div>`);
+    $('.tk', row).onclick = () => { vals[i] = true; unmark(row); $('.tk', row).classList.add('on'); $('.cr', row).classList.remove('on'); };
+    $('.cr', row).onclick = () => { vals[i] = false; unmark(row); $('.cr', row).classList.add('on'); $('.tk', row).classList.remove('on'); };
+    list.appendChild(row); return row;
+  });
+  shell.body.appendChild(list);
+  wireFoot(shell, () => { let s = 0; boxes.forEach((row, i) => { const ok = vals[i] === part.items[i].ok; if (ok) s++; mark($('.tc', row), ok); }); return { score: s, max: 5 }; },
+    () => { vals.length = 0; $$('.on', list).forEach(b => b.classList.remove('on')); unmark(list); });
+  return shell.sec;
+}
+
+/* =========================================================
+   READING & WRITING PART 2 - yes / no about a picture
+   ========================================================= */
+function R2(part, n) {
+  const shell = partShell(n, 'Look and read. Write <b>yes</b> or <b>no</b>.');
+  shell.body.appendChild(h('div', 'scenebox r2scene', part.scene()));
+  const list = h('div', 'qlist');
+  list.appendChild(h('div', 'sub', 'Examples'));
+  part.examples.forEach(e => list.appendChild(h('div', 'qrow', `<span class="qt">${e.t}</span><span class="ans"><span class="filled">${e.ans}</span></span>`)));
+  list.appendChild(h('div', 'sub', 'Questions'));
+  const vals = [];
+  const rows = part.items.map((it, i) => {
+    const row = h('div', 'qrow', `<span class="qn">${i + 1}</span><span class="qt">${it.t}</span><span class="ans yn"><button>yes</button><button>no</button></span>`);
+    $$('button', row).forEach(b => b.onclick = () => { vals[i] = b.textContent; unmark(row); $$('button', row).forEach(x => x.classList.toggle('on', x === b)); });
+    list.appendChild(row); return row;
+  });
+  shell.body.appendChild(list);
+  wireFoot(shell, () => { let s = 0; rows.forEach((r, i) => { const ok = vals[i] === part.items[i].ans; if (ok) s++; mark($('.yn', r), ok); }); return { score: s, max: 5 }; },
+    () => { vals.length = 0; $$('.on', list).forEach(b => b.classList.remove('on')); unmark(list); });
+  return shell.sec;
+}
+
+/* =========================================================
+   READING & WRITING PART 3 - scrambled letters (drag)
+   ========================================================= */
+function R3(part, n) {
+  const shell = partShell(n, 'Look at the pictures. Look at the letters. Drag the letters and write the words.');
+  const list = h('div', 'r3');
+  const pic = (k, sc) => svg(tr(OBJ[k](), 0, 0, sc || 1), '-60 -110 120 120', 'r3pic');
+  list.appendChild(h('div', 'sub', 'Example'));
+  list.appendChild(h('div', 'r3row', `<div class="picbox">${pic(part.example.pic, part.example.s)}</div><div class="slots">${part.example.word.split('').map(c => `<span class="slot filled">${c}</span>`).join('')}</div>`));
+  list.appendChild(h('div', 'sub', 'Questions'));
+  const rows = part.items.map((it, i) => {
+    const row = h('div', 'r3row', `<span class="qn">${i + 1}</span><div class="picbox">${pic(it.pic, it.s)}</div><div class="r3w"><div class="slots"></div><div class="tiles"></div></div>`);
+    const slotsEl = $('.slots', row), tilesEl = $('.tiles', row);
+    let letters; do { letters = shuffle(it.word.split('')); } while (letters.join('') === it.word && it.word.length > 1);
+    const slotEls = it.word.split('').map((_, k) => { const s = h('span', 'slot'); s.dataset.k = k; slotsEl.appendChild(s); return s; });
+    const tileEls = letters.map(ch => { const t = h('span', 'tile', ch); tilesEl.appendChild(t); return t; });
+    const put = (tile, slot) => {
+      unmark(row);
+      if (slot.tile) { slot.tile.classList.remove('used'); }
+      if (tile.slot) { tile.slot.textContent = ''; tile.slot.classList.remove('filled'); tile.slot.tile = null; }
+      slot.tile = tile; tile.slot = slot; slot.textContent = tile.textContent; slot.classList.add('filled'); tile.classList.add('used');
+    };
+    tileEls.forEach(t => dragger(t, {
+      onDrop: el => { const s = el && el.closest && el.closest('.slot'); if (s && slotEls.includes(s)) put(t, s); },
+      onClick: () => { if (t.classList.contains('used')) return; const s = slotEls.find(x => !x.tile); if (s) put(t, s); }
+    }));
+    slotEls.forEach(s => s.onclick = () => { if (!s.tile) return; unmark(row); s.tile.classList.remove('used'); s.tile.slot = null; s.tile = null; s.textContent = ''; s.classList.remove('filled'); });
+    row._get = () => slotEls.map(s => s.tile ? s.tile.textContent : '').join('');
+    row._reset = () => slotEls.forEach(s => s.click());
+    list.appendChild(row); return row;
+  });
+  shell.body.appendChild(list);
+  wireFoot(shell, () => { let s = 0; rows.forEach((r, i) => { const ok = r._get() === part.items[i].word; if (ok) s++; mark($('.slots', r), ok); if (!ok) $('.slots', r).title = 'Answer: ' + part.items[i].word; }); return { score: s, max: 5 }; },
+    () => { rows.forEach(r => r._reset()); unmark(list); });
+  return shell.sec;
+}
+
+/* =========================================================
+   READING & WRITING PART 4 - word box (drag words to gaps)
+   ========================================================= */
+function R4(part, n) {
+  const shell = partShell(n, 'Read this. Choose a word from the box. Drag the correct word to numbers 1&ndash;5. There is one example.');
+  const wrap = h('div', 'r4');
+  let k = 0; const gapEls = [];
+  const exWord = (part.text.match(/\[\[\*(\w+)\]\]/) || [])[1];
+  const html = part.text.replace(/\[\[(\*?)(\w+)\]\]/g, (_, ex, w) => ex ? `<span class="gap exgap">${w}</span>` : `(${++k}) <span class="gap" data-ans="${w}"></span>`);
+  const txt = h('div', 'r4text', `<h3>${part.title}</h3>${part.pic ? `<div class="r4hero">${part.pic()}</div>` : ''}<p>${html}</p>`);
+  const boxEl = h('div', 'wordbox');
+  const cards = part.words.map(w => {
+    const c = h('div', 'wcard' + (w.w === exWord ? ' excard' : ''), `${w.pic ? svg(tr(OBJ[w.pic](w.c), 0, 0, w.s || 1), '-60 -110 120 120', 'wpic') : ''}<span>${w.w}</span>`); c.dataset.w = w.w;
+    if (w.w === exWord) c.appendChild(h('div', 'exlab', 'Example'));
+    boxEl.appendChild(c); return c;
+  });
+  wrap.append(txt, boxEl); shell.body.appendChild(wrap);
+  $$('.gap[data-ans]', txt).forEach(g => gapEls.push(g));
+  let sel = null;
+  const place = (card, gap) => {
+    unmark(wrap);
+    if (gap.card) { gap.card.classList.remove('used'); }
+    const oldGap = gapEls.find(g => g.card === card); if (oldGap) { oldGap.card = null; oldGap.textContent = ''; oldGap.classList.remove('filled'); }
+    gap.card = card; gap.textContent = card.dataset.w; gap.classList.add('filled'); card.classList.add('used');
+  };
+  cards.forEach(c => {
+    if (c.classList.contains('excard')) return;
+    dragger(c, {
+      onDrop: el => { const g = el && el.closest && el.closest('.gap[data-ans]'); if (g && gapEls.includes(g)) place(c, g); },
+      onClick: () => { sel = sel === c ? null : c; cards.forEach(x => x.classList.toggle('sel', x === sel)); }
+    });
+  });
+  gapEls.forEach(g => g.onclick = () => {
+    if (sel) { place(sel, g); sel.classList.remove('sel'); sel = null; return; }
+    if (g.card) { unmark(wrap); g.card.classList.remove('used'); g.card = null; g.textContent = ''; g.classList.remove('filled'); }
+  });
+  wireFoot(shell, () => { let s = 0; gapEls.forEach(g => { const ok = g.card && g.card.dataset.w === g.dataset.ans; if (ok) s++; mark(g, !!ok); if (!ok) g.title = 'Answer: ' + g.dataset.ans; }); return { score: s, max: 5 }; },
+    () => { gapEls.forEach(g => { if (g.card) g.card.classList.remove('used'); g.card = null; g.textContent = ''; g.classList.remove('filled'); g.title = ''; }); unmark(wrap); });
+  return shell.sec;
+}
+
+/* =========================================================
+   READING & WRITING PART 5 - one-word answers
+   ========================================================= */
+function R5(part, n) {
+  const shell = partShell(n, 'Look at the pictures and read the questions. Write one-word answers.');
+  const wrap = h('div', 'r5');
+  const inputs = [];
+  part.pics.forEach((p, pi) => {
+    const blk = h('div', 'r5blk');
+    blk.appendChild(h('div', 'r5pic', p()));
+    const qs = h('div', 'qlist');
+    const exs = part.examples.filter(e => e.pic === pi);
+    if (exs.length) { qs.appendChild(h('div', 'sub', 'Examples')); exs.forEach(e => qs.appendChild(h('div', 'qrow', `<span class="qt">${e.q}</span><span class="ans">${e.pre || ''}<span class="filled">${e.a}</span>${e.post || ''}</span>`))); }
+    const its = part.items.map((it, i) => ({ it, i })).filter(o => o.it.pic === pi);
+    if (its.length) {
+      if (exs.length) qs.appendChild(h('div', 'sub', 'Questions'));
+      its.forEach(({ it, i }) => { const row = h('div', 'qrow', `<span class="qn">${i + 1}</span><span class="qt">${it.q}</span><span class="ans">${it.pre || ''}<input type="text" autocomplete="off" spellcheck="false">${it.post || ''}</span>`); qs.appendChild(row); inputs[i] = $('input', row); });
+    }
+    blk.appendChild(qs); wrap.appendChild(blk);
+  });
+  shell.body.appendChild(wrap);
+  wireFoot(shell, () => { let s = 0; inputs.forEach((inp, i) => { const ok = matches(inp.value, part.items[i].ans); if (ok) s++; mark(inp, ok); inp.title = ok ? '' : 'Answer: ' + part.items[i].ans[0]; }); return { score: s, max: 5 }; },
+    () => { inputs.forEach(i => { i.value = ''; i.title = ''; }); unmark(wrap); });
+  return shell.sec;
+}
+
+/* =========================================================
+   APP
+   ========================================================= */
+const REDRAW = [];
+const INTRO = {
+  L1: ['N: Part one.', 'N: Look at the picture. Listen and look.', 'N: There is one example.'],
+  L2: ['N: Part two.', 'N: Listen and write a name or a number.', 'N: There are two examples.'],
+  L3: ['N: Part three.', 'N: Look at the pictures. Listen and tick the box.', 'N: There is one example.'],
+  L4: ['N: Part four.', 'N: Look at the picture. Listen and colour.', 'N: There is one example.']
+};
+const RENDER = { L1, L2, L3, L4, R1, R2, R3, R4, R5 };
+let current = { t: 0, s: 'L' };
+function buildTest(ti) {
+  const T = TESTS[ti];
+  const root = h('div', 'test'); root.dataset.t = ti;
+  ['L', 'R'].forEach(sk => {
+    const secEl = h('div', 'section'); secEl.dataset.s = sk;
+    const cover = h('div', 'cover', `<h2>${T.title} &middot; ${sk === 'L' ? 'Listening' : 'Reading &amp; Writing'}</h2><p>${sk === 'L' ? 'There are 20 questions. Press <b>Play Part</b> to listen. You can listen again as many times as you need.' : 'There are 25 questions. Read carefully and check your answers at the end of each part.'}</p>`);
+    secEl.appendChild(cover);
+    T[sk].forEach((p, i) => secEl.appendChild(RENDER[p.type](p, i + 1)));
+    const end = h('div', 'endbar', `<button class="btn big">Check all parts</button>`);
+    $('button', end).onclick = () => { $$('.part .chk', secEl).forEach(b => b.click()); end.scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+    secEl.appendChild(end);
+    root.appendChild(secEl);
+  });
+  return root;
+}
+function updateTotals() {
+  const root = $(`.test[data-t="${current.t}"]`); if (!root) return;
+  const sum = sk => { let s = 0, m = 0, done = 0; $$(`.section[data-s="${sk}"] .part`, root).forEach(p => { if (p.dataset.score !== undefined) { s += +p.dataset.score; done++; } }); return { s, done }; };
+  const L = sum('L'), Rr = sum('R');
+  $('#totL').textContent = `${L.s} / 20`; $('#totR').textContent = `${Rr.s} / 25`;
+  $('#totL').title = `${L.done} of 4 parts checked`; $('#totR').title = `${Rr.done} of 5 parts checked`;
+}
+function show() {
+  stopAudio();
+  $$('.test').forEach(t => t.style.display = (+t.dataset.t === current.t) ? '' : 'none');
+  $$('.section').forEach(s => s.style.display = (s.dataset.s === current.s) ? '' : 'none');
+  $$('.ttab').forEach((b, i) => b.classList.toggle('on', i === current.t));
+  $$('.stab').forEach(b => b.classList.toggle('on', b.dataset.s === current.s));
+  updateTotals();
+  requestAnimationFrame(() => REDRAW.forEach(f => f()));
+}
+function init() {
+  const tabs = $('#ttabs');
+  TESTS.forEach((T, i) => { const b = h('button', 'ttab', T.title); b.onclick = () => { current.t = i; show(); window.scrollTo(0, 0); }; tabs.appendChild(b); });
+  $$('.stab').forEach(b => b.onclick = () => { current.s = b.dataset.s; show(); window.scrollTo(0, 0); });
+  const paper = $('#paper');
+  TESTS.forEach((_, i) => paper.appendChild(buildTest(i)));
+  $('#resetAll').onclick = () => { if (!confirm('Clear all answers in this test?')) return; $$(`.test[data-t="${current.t}"] .rst`).forEach(b => b.click()); };
+  window.addEventListener('resize', () => REDRAW.forEach(f => f()));
+  show();
+}
+document.addEventListener('DOMContentLoaded', init);
+
+/* =========================================================
+   TEST 1 - original content
+   ========================================================= */
+const one = (k, c, s = 1.6, y = 130) => () => panel(tr(OBJ[k](c), 100, y, s));
+const floor = '<rect x="0" y="138" width="200" height="12" fill="#e3b779"/>';
+const TESTS = [];
+
+TESTS.push({
+  title: 'Test 1',
+  L: [
+    { /* PART 1 - park */
+      type: 'L1',
+      names: ['Anna', 'Ben', 'Kim', 'Dan', 'Lucy', 'Grace', 'Tom'],
+      example: { name: 'Ben', target: 't0' },
+      answers: { Anna: 't1', Dan: 't2', Grace: 't3', Tom: 't4', Lucy: 't5' },
+      scene: () => {
+        let s = bgPark();
+        s += tr(OBJ.tree(), 650, 330, 1.1);
+        s += person(600, 372, { kind: 'girl', pose: 'sit', hairStyle: 'pony', hair: '#2b1a10', shirt: '#9b59b6', legs: '#34495e', item: { k: 'openBook', c: '#e74c3c', s: 0.6 }, target: 't1' });
+        s += person(480, 330, { kind: 'girl', pose: 'up', jump: true, hairStyle: 'curly', hair: '#222', shirt: '#f1c40f', legs: '#c0392b', s: 0.75, target: 't6' });
+        s += person(140, 440, { kind: 'boy', pose: 'wave', shirt: '#3b7dd8', legs: '#2c3e50', target: 't0' });
+        let hd = person.hands.R;
+        s += P(`M${hd[0]} ${hd[1]} Q210 230 250 122`) + tr(OBJ.kite('#e74c3c'), 250, 122, 1) + P('M250 122 Q240 150 255 170 Q270 190 255 205');
+        s += person(275, 468, { kind: 'girl', pose: 'holdR', hairStyle: 'long', hair: '#f4d03f', shirt: '#e84393', dress: true, item: { k: 'icecream', c: '#fffbe6', s: 0.7, dy: 14 }, target: 't3' });
+        s += person(385, 442, { kind: 'man', pose: 'holdR', shirt: '#16a085', legs: '#7f8c8d', hair: '#222', target: 't2' });
+        hd = person.hands.R;
+        s += tr(OBJ.dog('#c68642'), 455, 448, 1.1) + P(`M${hd[0]} ${hd[1]} Q470 380 478 410`);
+        s += person(545, 472, { kind: 'boy', pose: 'kick', shirt: '#e74c3c', legs: '#2c3e50', hair: '#8b5a2b', target: 't4' }) + tr(OBJ.ball('#fff'), 596, 470, 0.8);
+        s += person(712, 472, { kind: 'woman', pose: 'wave', shirt: '#f39c12', dress: true, hairStyle: 'curly', hair: '#5a3825', target: 't5' });
+        hd = person.hands.R;
+        s += tr(OBJ.balloon('#e74c3c'), hd[0] - 4, hd[1], 0.9) + tr(OBJ.balloon('#3b7dd8'), hd[0] + 10, hd[1] - 14, 0.9) + tr(OBJ.balloon('#27ae60'), hd[0] - 18, hd[1] - 20, 0.9);
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['F: Look at the boy with the kite.', 'B: The boy in the blue T-shirt?', 'F: Yes. That\'s Ben. He loves his red kite.'] },
+        { label: '1', lines: ['B: Who\'s that girl under the tree?', 'F: The girl with the book?', 'B: Yes.', 'F: That\'s Anna. She\'s reading a book about animals.'] },
+        { label: '2', lines: ['F: Can you see the man with the dog?', 'B: Yes. What\'s his name?', 'F: His name is Dan. He walks in the park with his dog every day.'] },
+        { label: '3', lines: ['B: Look at that girl! She\'s got long yellow hair.', 'F: Oh yes. She\'s eating an ice cream.', 'B: What\'s her name?', 'F: Her name is Grace.'] },
+        { label: '4', lines: ['F: Who\'s the boy with the ball?', 'B: The boy in the red T-shirt? That\'s Tom.', 'F: Is he good at football?', 'B: Yes, he is!'] },
+        { label: '5', lines: ['B: And who\'s the woman with the balloons?', 'F: That\'s Lucy.', 'B: How many balloons has she got?', 'F: She\'s got three balloons.'] }
+      ]
+    },
+    { /* PART 2 */
+      type: 'L2',
+      pic: () => {
+        let s = bgRoom() + windowAt(470, 60, 180, 130) + tr(OBJ.table(), 560, 445, 1) + tr(OBJ.fishbowl(), 560, 369, 1.4);
+        [[540, 340], [575, 322], [548, 314], [580, 346]].forEach(([x, y], i) => { s += tr(OBJ.fish('#f39c12'), x, y, 0.32, i % 2 === 1); });
+        s += person(300, 455, { kind: 'girl', hairStyle: 'pony', hair: '#8b5a2b', shirt: '#e74c3c', dress: true, pose: 'wave' });
+        s += tr(OBJ.cat('#95a5a6'), 175, 455, 1.4);
+        return svg(s);
+      },
+      examples: [{ q: 'What is the girl\'s name?', a: 'Sue' }, { q: 'How old is she?', a: '7' }],
+      items: [
+        { q: 'What is the name of Sue\'s cat?', ans: ['Kitty'] },
+        { q: 'How many fish has Sue got?', ans: ['4'] },
+        { q: 'What is the name of Sue\'s school?', post: ' School', ans: ['Hill'] },
+        { q: 'How old is Sue\'s brother?', ans: ['10'] },
+        { q: 'What is the name of Sue\'s friend?', ans: ['Eva'] }
+      ],
+      segs: [
+        { label: 'Example', lines: ['M: Hello. What\'s your name?', 'G: My name\'s Sue.', 'M: How do you spell that?', 'G: S. U. E.', 'M: And how old are you, Sue?', 'G: I\'m seven.'] },
+        { label: '1', lines: ['M: Is that your cat?', 'G: Yes. Her name is Kitty.', 'M: How do you spell that?', 'G: K. I. T. T. Y.'] },
+        { label: '2', lines: ['M: And you\'ve got some fish too!', 'G: Yes. I\'ve got four fish.', 'M: Four fish? Wow!'] },
+        { label: '3', lines: ['M: What\'s the name of your school, Sue?', 'G: It\'s Hill School.', 'M: Hill? Is that H. I. L. L.?', 'G: Yes, that\'s right.'] },
+        { label: '4', lines: ['M: Have you got a brother?', 'G: Yes. His name\'s Max. He\'s ten.', 'M: Ten? He\'s big!'] },
+        { label: '5', lines: ['M: Who\'s your best friend?', 'G: My best friend is Eva.', 'M: How do you spell Eva?', 'G: E. V. A.'] }
+      ]
+    },
+    { /* PART 3 */
+      type: 'L3',
+      items: [
+        { ex: true, q: 'What is Sam eating?', opts: [one('banana'), one('apple'), one('cake')], ans: 1 },
+        { q: 'Which is Jill\'s pet?', opts: [one('dog', '#c68642', 1.5), one('cat', '#f39c12', 1.7), one('fish', '#f39c12', 2)], ans: 2 },
+        { q: 'What is Nick\'s favourite toy?', opts: [one('car', '#e74c3c', 1.5), one('ball', '#3b7dd8', 2), one('kite', '#27ae60', 1.5)], ans: 1 },
+        { q: 'Where is the cat?', opts: [
+            () => panel(floor + tr(OBJ.chair(), 100, 140, 1) + tr(OBJ.cat('#555'), 100, 94, 0.9)),
+            () => panel(floor + tr(OBJ.cat('#555'), 100, 140, 0.8) + tr(OBJ.table(), 100, 140, 0.75)),
+            () => panel(floor + tr(OBJ.cat('#555'), 96, 106, 0.9) + tr(OBJ.box(), 100, 140, 1.2))], ans: 2 },
+        { q: 'What is May doing?', opts: [
+            () => panel(person(100, 146, { kind: 'girl', pose: 'hold', hairStyle: 'pony', shirt: '#9b59b6', dress: true, item: { k: 'openBook', s: 0.6 }, s: 0.85 })),
+            () => panel(person(90, 146, { kind: 'girl', mouth: 'open', hairStyle: 'pony', shirt: '#9b59b6', dress: true, s: 0.85 }) + tr(OBJ.notes(), 140, 50, 1.2) + tr(OBJ.notes(), 160, 80, 0.9)),
+            () => panel(person(100, 146, { kind: 'girl', pose: 'run', hairStyle: 'pony', shirt: '#9b59b6', dress: true, s: 0.85 }))], ans: 1 },
+        { q: 'Which is Mr Brown\'s boat?', opts: [
+            () => panel('<rect x="0" y="105" width="200" height="45" fill="#7ec8f0"/>' + tr(OBJ.boat('#e74c3c'), 100, 125, 1.2)),
+            () => panel('<rect x="0" y="105" width="200" height="45" fill="#7ec8f0"/>' + tr(OBJ.boat('#27ae60'), 100, 125, 0.7)),
+            () => panel('<rect x="0" y="105" width="200" height="45" fill="#7ec8f0"/>' + tr(OBJ.boat('#27ae60'), 100, 125, 1.2))], ans: 1 }
+      ],
+      segs: [
+        { label: 'Example', lines: ['F: Sam, are you eating a banana?', 'B: No, I\'m not. I\'m eating an apple.', 'F: Is it nice?', 'B: Yes! I love apples.'] },
+        { label: '1', lines: ['M: Have you got a pet, Jill?', 'G: Yes, I have. But it isn\'t a dog or a cat.', 'M: What is it then?', 'G: It\'s a fish. It\'s orange and very small.'] },
+        { label: '2', lines: ['F: Is this your favourite toy, Nick? The red car?', 'B: No. My favourite toy is my ball.', 'F: Your ball?', 'B: Yes. I play with it every day.'] },
+        { label: '3', lines: ['B: Mum, where\'s the cat? Is it on the chair?', 'F: No, it isn\'t.', 'B: Is it under the table?', 'F: No. Look! It\'s in the box!'] },
+        { label: '4', lines: ['M: Is May running in the garden?', 'F: No, she isn\'t. She\'s in her bedroom.', 'M: Is she reading a book?', 'F: No, she\'s singing a song. Listen!'] },
+        { label: '5', lines: ['B: Is that your boat, Mr Brown? The big red boat?', 'M: No. My boat is green.', 'B: The big green boat?', 'M: No, my boat is small. Look, it\'s the small green boat.'] }
+      ]
+    },
+    { /* PART 4 - colour */
+      type: 'L4',
+      example: { id: 'ball', colour: 'red' },
+      answers: { cat: 'grey', book1: 'green', lamp: 'yellow', shoe: 'blue', balloon: 'purple' },
+      scene: () => {
+        let s = bgRoom() + windowAt(400, 60, 170, 120) + doorAt(705, 190, 70, 150);
+        s += tr(OBJ.sofa('#c9a0dc'), 190, 445, 1);
+        s += col('cat', tr(OBJ.cat('#fff'), 225, 397, 1.1));
+        s += col('lamp', tr(OBJ.lamp('#fff'), 340, 445, 1.1));
+        s += tr(OBJ.table('#c0874f'), 520, 450, 1);
+        s += col('book1', tr(OBJ.book('#fff'), 495, 374, 1));
+        s += col('ball', tr(OBJ.ball('#fff'), 535, 450, 0.9));
+        s += tr(OBJ.chair('#a0703e'), 645, 455, 1);
+        s += col('book2', tr(OBJ.book('#fff'), 645, 409, 0.8));
+        s += col('shoe', tr(OBJ.shoe('#fff'), 645, 455, 0.7));
+        s += col('balloon', tr(OBJ.balloon('#fff'), 680, 330, 1.1));
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['F: Look at the ball under the table. Can you see it?', 'B: Yes, I can.', 'F: Colour it red.', 'B: OK.'] },
+        { label: '1', lines: ['F: Now find the cat. Can you see the cat on the sofa?', 'B: Yes.', 'F: Colour it grey, please.'] },
+        { label: '2', lines: ['B: There are two books.', 'F: That\'s right. Colour the book on the table.', 'B: What colour?', 'F: Green. Make it green.'] },
+        { label: '3', lines: ['F: Now, can you see the lamp?', 'B: The lamp next to the sofa?', 'F: Yes. Colour it yellow.'] },
+        { label: '4', lines: ['B: Can I colour the shoe now?', 'F: The shoe under the chair? Yes. Colour it blue.'] },
+        { label: '5', lines: ['F: And there\'s a balloon next to the door.', 'B: I can see it. What colour?', 'F: Purple. Colour the balloon purple.'] }
+      ]
+    }
+  ],
+  R: [
+    { type: 'R1',
+      examples: [{ pic: 'banana', n: 2, text: 'These are bananas.', ok: true }, { pic: 'cat', text: 'This is a dog.', ok: false }],
+      items: [
+        { pic: 'clock', text: 'This is a clock.', ok: true, s: 1.6 },
+        { pic: 'tree', n: 2, text: 'These are flowers.', ok: false, s: 0.55 },
+        { pic: 'bike', text: 'This is a bike.', ok: true },
+        { pic: 'shoe', n: 2, text: 'These are socks.', ok: false },
+        { pic: 'guitar', text: 'This is a guitar.', ok: true, s: 1 }
+      ] },
+    { type: 'R2',
+      scene: () => {
+        let s = bgClass() + TXT(400, 150, 'A  B  C', 48, '#fff') + windowAt(600, 60, 160, 130) + tr(OBJ.spider(), 650, 125, 0.7) + tr(OBJ.clock(), 140, 140, 1.4);
+        s += person(170, 455, { kind: 'woman', pose: 'point', hairStyle: 'long', hair: '#7a4b25', glasses: true, shirt: '#27ae60', dress: true });
+        s += tr(OBJ.chair('#a0703e'), 330, 475, 1) + person(330, 429, { kind: 'boy', pose: 'sit', shirt: '#e67e22', legs: '#2c3e50', item: { k: 'openBook', c: '#3b7dd8', s: 0.6 } });
+        s += tr(OBJ.chair('#a0703e'), 470, 475, 1) + person(470, 429, { kind: 'girl', pose: 'sit', hairStyle: 'pony', hair: '#222', shirt: '#e84393', legs: '#34495e', item: { k: 'book', c: '#f1c40f', s: 0.6 } });
+        s += tr(OBJ.bag('#16a085'), 575, 478, 1.1);
+        s += person(690, 465, { kind: 'boy', shirt: '#3b7dd8', legs: '#7f8c8d', hair: '#f4d03f' });
+        return svg(s);
+      },
+      examples: [{ t: 'There is a clock on the wall.', ans: 'yes' }, { t: 'The teacher has got short hair.', ans: 'no' }],
+      items: [
+        { t: 'The teacher is wearing glasses.', ans: 'yes' },
+        { t: 'A boy is standing next to the window.', ans: 'yes' },
+        { t: 'There is a spider on the board.', ans: 'no' },
+        { t: 'The bag is on a chair.', ans: 'no' },
+        { t: 'Two children are sitting.', ans: 'yes' }
+      ] },
+    { type: 'R3',
+      example: { pic: 'frog', word: 'frog', s: 1.6 },
+      items: [{ pic: 'kite', word: 'kite', s: 1.4 }, { pic: 'horse', word: 'horse', s: 0.9 }, { pic: 'lemon', word: 'lemon', s: 1.8 }, { pic: 'spider', word: 'spider', s: 1.8 }, { pic: 'table', word: 'table', s: 0.6 }] },
+    { type: 'R4', title: 'Frogs',
+      pic: () => svg(tr(OBJ.frog(), 0, 0, 2.4), '-70 -85 140 90'),
+      text: 'Frogs are small [[*animals]]. Lots of frogs are green, but some are brown or yellow. Frogs live near [[water]] and they are very good at swimming. A frog has got four [[legs]] and two big [[eyes]]. Frogs love eating [[spiders]]. You can sometimes find a frog in your [[garden]]!',
+      words: [{ w: 'animals', pic: 'cat', s: 1.4 }, { w: 'hats', pic: 'hat', s: 1.3 }, { w: 'water', pic: 'water', s: 1.4 }, { w: 'legs', pic: 'legsIcon', s: 1.6 }, { w: 'bus', pic: 'bus', s: 0.7 }, { w: 'eyes', pic: 'eyeIcon', s: 1.6 }, { w: 'spiders', pic: 'spider', s: 1.8 }, { w: 'garden', pic: 'garden', s: 1.6 }] },
+    { type: 'R5',
+      pics: [
+        () => svg(bgBeach() + person(170, 400, { kind: 'woman', pose: 'sit', hairStyle: 'long', hair: '#222', shirt: '#e84393', legs: '#e84393', hat: { style: 'sun', c: '#f1c40f' } }) + tr(OBJ.dog('#fff'), 330, 440, 1.2) +
+          person(470, 455, { kind: 'boy', pose: 'kick', shirt: '#27ae60', legs: '#3b7dd8' }) + tr(OBJ.ball('#e74c3c'), 522, 452, 0.8) + person(640, 300, { kind: 'girl', pose: 'wave', hairStyle: 'pony', hair: '#222', shirt: '#f39c12', legs: '#f39c12', s: 0.8 })),
+        () => svg(bgBeach() + person(250, 460, { kind: 'boy', pose: 'run', shirt: '#27ae60', legs: '#3b7dd8' }) + tr(OBJ.dog('#fff'), 470, 440, 1.3) + tr(OBJ.ball('#e74c3c'), 528, 410, 0.55) + P('M380 420 L330 420 M390 400 L345 395 M385 440 L340 445')),
+        () => svg(bgBeach() + tr(OBJ.dog('#fff'), 610, 290, 1.1) + tr(OBJ.ball('#e74c3c'), 665, 262, 0.5) +
+          person(170, 455, { kind: 'woman', mouth: 'open', hairStyle: 'long', hair: '#222', shirt: '#e84393', dress: true }) + person(290, 460, { kind: 'boy', mouth: 'open', pose: 'up', shirt: '#27ae60', legs: '#3b7dd8' }) + person(390, 460, { kind: 'girl', mouth: 'open', hairStyle: 'pony', hair: '#222', shirt: '#f39c12', legs: '#f39c12' }))
+      ],
+      examples: [{ pic: 0, q: 'Where are the people?', pre: 'at the ', a: 'beach' }, { pic: 0, q: 'How many children are there?', a: 'two' }],
+      items: [
+        { pic: 0, q: 'What is the boy playing with?', pre: 'a ', ans: ['ball'] },
+        { pic: 0, q: 'Who is sitting on the sand?', pre: 'the children\'s ', ans: ['mother', 'mum', 'mom', 'mummy'] },
+        { pic: 1, q: 'What has the dog got now?', pre: 'the ', ans: ['ball'] },
+        { pic: 2, q: 'Where is the dog now?', pre: 'in the ', ans: ['sea', 'water'] },
+        { pic: 2, q: 'What are the people doing?', pre: 'They\'re ', ans: ['laughing', 'smiling'] }
+      ] }
+  ]
+});
+
+/* =========================================================
+   TEST 2 - original content
+   ========================================================= */
+TESTS.push({
+  title: 'Test 2',
+  L: [
+    { /* PART 1 - beach */
+      type: 'L1',
+      names: ['May', 'Alex', 'Sam', 'Bill', 'Eva', 'Nick', 'Jill'],
+      example: { name: 'Sam', target: 't0' },
+      answers: { May: 't1', Bill: 't2', Jill: 't3', Nick: 't4', Eva: 't5' },
+      scene: () => {
+        let s = bgBeach();
+        s += person(430, 300, { kind: 'woman', pose: 'wave', hairStyle: 'long', hair: '#1a1a1a', shirt: '#e74c3c', legs: '#e74c3c', s: 0.8, target: 't5' });
+        s += person(670, 300, { kind: 'boy', pose: 'hold', shirt: '#f1c40f', legs: '#2c3e50', item: { k: 'ball', c: '#3b7dd8', s: 0.6 }, s: 0.8, target: 't6' });
+        s += person(110, 455, { kind: 'boy', pose: 'holdR', shirt: '#27ae60', legs: '#2c3e50', item: { k: 'boat', c: '#e74c3c', s: 0.4, dy: 26 }, target: 't0' });
+        s += person(235, 418, { kind: 'girl', pose: 'sit', hairStyle: 'long', hair: '#a0522d', shirt: '#f78fb3', legs: '#3b7dd8', hat: { style: 'sun', c: '#e84393' }, target: 't1' });
+        s += tr(OBJ.chair('#3b7dd8'), 395, 475, 1) + person(395, 429, { kind: 'man', pose: 'sit', hair: '#555', shirt: '#7f8c8d', legs: '#34495e', item: { k: 'openBook', c: '#27ae60', s: 0.6 }, target: 't2' });
+        s += person(560, 468, { kind: 'girl', pose: 'run', hairStyle: 'pony', hair: '#222', shirt: '#9b59b6', legs: '#34495e', target: 't3' }) + tr(OBJ.dog('#fff'), 635, 470, 1);
+        s += person(735, 470, { kind: 'boy', pose: 'hold', shirt: '#e67e22', legs: '#7f8c8d', hair: '#222', item: { k: 'camera', s: 0.7 }, target: 't4' });
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['B: Look at that boy with the boat!', 'F: The boy in the green T-shirt?', 'B: Yes. That\'s Sam. It\'s his new boat.'] },
+        { label: '1', lines: ['F: Who\'s the girl with the big pink hat?', 'B: She\'s sitting on the sand. That\'s May.', 'F: May? I like her hat!'] },
+        { label: '2', lines: ['B: There\'s a man on a chair.', 'F: Is he reading?', 'B: Yes, he\'s reading a book. His name\'s Bill.'] },
+        { label: '3', lines: ['F: Can you see the girl with the dog?', 'B: The girl who\'s running?', 'F: Yes. Her name is Jill.'] },
+        { label: '4', lines: ['B: Who\'s that boy with the camera?', 'F: That\'s Nick. He\'s taking a photo of the sea.'] },
+        { label: '5', lines: ['F: Look! There\'s a woman in the water.', 'B: Is she waving?', 'F: Yes, she is. That\'s Eva. She\'s got long black hair.'] }
+      ]
+    },
+    { /* PART 2 */
+      type: 'L2',
+      pic: () => svg(bgGarden() + person(470, 460, { kind: 'boy', pose: 'wave', shirt: '#e74c3c', legs: '#2c3e50', hair: '#222' }) + tr(OBJ.bike('#3b7dd8'), 600, 470, 1.4) + tr(OBJ.dog('#2b2b2b'), 330, 470, 1.3)),
+      examples: [{ q: 'What is the boy\'s name?', a: 'Hugo' }, { q: 'How old is he?', a: '9' }],
+      items: [
+        { q: 'What is the name of Hugo\'s street?', post: ' Street', ans: ['Green'] },
+        { q: 'How many children are in Hugo\'s class?', ans: ['20'] },
+        { q: 'What is the name of Hugo\'s dog?', ans: ['Rex'] },
+        { q: 'How many bikes has Hugo\'s family got?', ans: ['3'] },
+        { q: 'What is the name of Hugo\'s teacher?', pre: 'Mrs ', ans: ['Bell'] }
+      ],
+      segs: [
+        { label: 'Example', lines: ['F: Hello. What\'s your name?', 'B: Hugo.', 'F: How do you spell that?', 'B: H. U. G. O.', 'F: And how old are you, Hugo?', 'B: I\'m nine.'] },
+        { label: '1', lines: ['F: Where do you live, Hugo?', 'B: I live in Green Street.', 'F: Is that G. R. E. E. N.?', 'B: Yes, that\'s right.'] },
+        { label: '2', lines: ['F: How many children are there in your class?', 'B: There are twenty children.', 'F: Twenty? That\'s a big class!'] },
+        { label: '3', lines: ['F: Is that your dog?', 'B: Yes. His name\'s Rex.', 'F: How do you spell Rex?', 'B: R. E. X.'] },
+        { label: '4', lines: ['F: I like your bike.', 'B: Thanks. We\'ve got three bikes in my family.', 'F: Three bikes!'] },
+        { label: '5', lines: ['F: Who\'s your teacher?', 'B: Mrs Bell.', 'F: Bell? B. E. L. L.?', 'B: Yes. She\'s very nice.'] }
+      ]
+    },
+    { /* PART 3 */
+      type: 'L3',
+      items: [
+        { ex: true, q: 'What is Ann drinking?', opts: [one('glass', '#ffffff', 2.2), one('glass', '#f39c12', 2.2), one('glass', '#bfe6fb', 2.2)], ans: 1 },
+        { q: 'Where is Tom\'s ball?', opts: [
+            () => panel(floor + tr(OBJ.bed('#5dade2'), 100, 140, 0.9) + tr(OBJ.ball('#e74c3c'), 110, 92, 0.6)),
+            () => panel(floor + tr(OBJ.ball('#e74c3c'), 100, 140, 0.7) + tr(OBJ.table(), 100, 140, 0.75)),
+            () => panel(floor + tr(OBJ.chair(), 100, 140, 1) + tr(OBJ.ball('#e74c3c'), 100, 94, 0.6))], ans: 1 },
+        { q: 'What is Dad doing?', opts: [
+            () => panel(person(100, 146, { kind: 'man', pose: 'hold', hair: '#222', shirt: '#16a085', legs: '#34495e', item: { k: 'openBook', s: 0.6 }, s: 0.7 })),
+            () => panel(person(100, 146, { kind: 'man', pose: 'run', hair: '#222', shirt: '#16a085', legs: '#34495e', s: 0.7 })),
+            () => panel(floor + tr(OBJ.chair(), 100, 140, 1) + person(100, 94, { kind: 'man', pose: 'sit', sleep: true, hair: '#222', shirt: '#16a085', legs: '#34495e', s: 0.7 }))], ans: 1 },
+        { q: 'Which animal does Lucy like?', opts: [one('horse', '#a0522d', 1.2), one('duck', '#f7d038', 2), one('frog', '#6ab04c', 2)], ans: 1 },
+        { q: 'What has Kim got for her birthday?', opts: [one('guitar', '#e67e22', 1.4), one('computer', '#d0d6dd', 1.6), one('robot', '#9fb6cd', 1.4)], ans: 2 },
+        { q: 'Which is Pat\'s sister?', opts: [
+            () => panel(person(100, 146, { kind: 'girl', hairStyle: 'curly', hair: '#222', glasses: true, shirt: '#e84393', dress: true, s: 0.85 })),
+            () => panel(person(100, 146, { kind: 'girl', hairStyle: 'pony', hair: '#222', shirt: '#e84393', dress: true, s: 0.85 })),
+            () => panel(person(100, 146, { kind: 'girl', hairStyle: 'long', hair: '#222', glasses: true, shirt: '#e84393', dress: true, s: 0.85 }))], ans: 2 }
+      ],
+      segs: [
+        { label: 'Example', lines: ['F: Ann, is that milk?', 'G: No, it isn\'t. It\'s orange juice.', 'F: Do you like orange juice?', 'G: Yes, I love it!'] },
+        { label: '1', lines: ['B: Mum, where\'s my ball? Is it on my bed?', 'F: No, it isn\'t.', 'B: Is it on the chair?', 'F: No. Look! It\'s under the table.'] },
+        { label: '2', lines: ['F: Where\'s Dad? Is he reading in the garden?', 'B: No, he isn\'t.', 'F: Is he sleeping?', 'B: No! He\'s running in the park.'] },
+        { label: '3', lines: ['M: Do you like horses, Lucy?', 'G: They\'re OK. But I love ducks.', 'M: Ducks? Why?', 'G: Because they\'re yellow and they can swim!'] },
+        { label: '4', lines: ['M: Happy birthday, Kim! Is that a new guitar?', 'G: No. Look, I\'ve got a robot!', 'M: A robot? Wow!'] },
+        { label: '5', lines: ['F: Is that your sister, Pat? The girl with curly hair?', 'B: No. My sister has got long hair.', 'F: Has she got glasses?', 'B: Yes, she has.'] }
+      ]
+    },
+    { /* PART 4 - colour */
+      type: 'L4',
+      example: { id: 'bird', colour: 'yellow' },
+      answers: { flower: 'pink', car: 'red', bike: 'green', cat: 'black', ball: 'orange' },
+      scene: () => {
+        let s = bgGarden() + doorAt(200, 140, 60, 130);
+        s += tr(OBJ.tree('#5aa845'), 520, 430, 1.1);
+        s += col('bird', tr(OBJ.bird('#fff'), 545, 318, 1));
+        s += col('flower', tr(OBJ.flower('#fff'), 290, 300, 1.1));
+        s += col('flower2', tr(OBJ.flower('#fff'), 420, 450, 1.1));
+        s += col('car', tr(OBJ.car('#fff'), 120, 340, 1.3));
+        s += col('bike', tr(OBJ.bike('#fff'), 650, 450, 1.2), [600, 375, 100, 75]);
+        s += col('cat', tr(OBJ.cat('#fff'), 740, 238, 0.9));
+        s += col('ball', tr(OBJ.ball('#fff'), 330, 448, 0.8)) + tr(OBJ.box(), 330, 480, 1.1);
+        s += col('ball2', tr(OBJ.ball('#fff'), 470, 485, 0.8));
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['F: Look at the bird in the tree.', 'B: Can I colour it?', 'F: Yes. Colour it yellow.'] },
+        { label: '1', lines: ['B: There are two flowers.', 'F: Yes. Colour the flower next to the door.', 'B: What colour?', 'F: Pink, please.'] },
+        { label: '2', lines: ['F: Now, can you see the car in front of the house?', 'B: Yes, I can.', 'F: Colour it red.'] },
+        { label: '3', lines: ['B: What about the bike?', 'F: The bike next to the tree? Colour it green.'] },
+        { label: '4', lines: ['F: There\'s a cat on the wall.', 'B: Oh yes! Can I colour it black?', 'F: Yes, good idea. Make it black.'] },
+        { label: '5', lines: ['B: And the ball? There are two balls.', 'F: Colour the ball in the box. Make it orange.'] }
+      ]
+    }
+  ],
+  R: [
+    { type: 'R1',
+      examples: [{ pic: 'fish', text: 'This is a fish.', ok: true, s: 1.6 }, { pic: 'orange', n: 2, text: 'These are apples.', ok: false }],
+      items: [
+        { pic: 'cake', n: 2, text: 'These are cakes.', ok: true, s: 1 },
+        { pic: 'car', text: 'This is a bus.', ok: false, s: 1.1 },
+        { pic: 'bird', n: 3, text: 'These are birds.', ok: true, s: 1.1 },
+        { pic: 'lamp', text: 'This is a lamp.', ok: true, s: 0.7 },
+        { pic: 'computer', text: 'This is a phone.', ok: false, s: 1.3 }
+      ] },
+    { type: 'R2',
+      scene: () => {
+        let s = bgKitchen() + windowAt(90, 70, 170, 120) + tr(OBJ.clock(), 330, 120, 1.2);
+        s += tr(OBJ.chair('#a0703e'), 95, 475, 1) + person(95, 429, { kind: 'boy', pose: 'sit', shirt: '#27ae60', legs: '#2c3e50', item: { k: 'banana', s: 0.55 } });
+        s += tr(OBJ.dog('#c68642'), 215, 470, 0.9) + tr(OBJ.table('#c0874f'), 230, 470, 1);
+        s += tr(OBJ.egg(), 205, 394, 0.9) + tr(OBJ.egg(), 235, 394, 0.9);
+        s += tr(OBJ.chair('#a0703e'), 360, 475, 1);
+        s += person(460, 468, { kind: 'girl', hairStyle: 'long', hair: '#f4d03f', shirt: '#3b7dd8', dress: true });
+        s += person(600, 460, { kind: 'woman', pose: 'hold', hairStyle: 'pony', hair: '#7a4b25', shirt: '#e67e22', legs: '#34495e', item: { k: 'cake', c: '#f6a6c1', s: 0.6 } });
+        s += tr(OBJ.chair('#a0703e'), 730, 475, 1);
+        return svg(s);
+      },
+      examples: [{ t: 'There is a dog under the table.', ans: 'yes' }, { t: 'The woman has got a hat.', ans: 'no' }],
+      items: [
+        { t: 'The boy is eating an apple.', ans: 'no' },
+        { t: 'There are three chairs.', ans: 'yes' },
+        { t: 'The woman is holding a cake.', ans: 'yes' },
+        { t: 'The girl is wearing a pink dress.', ans: 'no' },
+        { t: 'There are two eggs on the table.', ans: 'yes' }
+      ] },
+    { type: 'R3',
+      example: { pic: 'fish', word: 'fish', s: 1.7 },
+      items: [{ pic: 'bird', word: 'bird', s: 2 }, { pic: 'snake', word: 'snake', s: 1.4 }, { pic: 'grapes', word: 'grapes', s: 1.8 }, { pic: 'mouse', word: 'mouse', s: 1.8 }, { pic: 'shell', word: 'shell', s: 2.2 }] },
+    { type: 'R4', title: 'Horses',
+      pic: () => svg(tr(OBJ.horse(), 0, 0, 1.3), '-75 -140 150 145'),
+      text: 'Horses are big [[*animals]]. They can be brown, black, white or grey. Horses have got four long [[legs]] and they can run very fast. A horse has got a long [[tail]] too. Horses eat [[grass]] and they love [[apples]]. Some people ride their horses on the [[beach]].',
+      words: [{ w: 'animals', pic: 'cat', s: 1.4 }, { w: 'books', pic: 'book', s: 1.5 }, { w: 'legs', pic: 'legsIcon', s: 1.6 }, { w: 'tail', pic: 'tail', s: 1.4 }, { w: 'shoes', pic: 'shoe', s: 1.6 }, { w: 'grass', pic: 'grass', s: 1.6 }, { w: 'apples', pic: 'apple', s: 1.8 }, { w: 'beach', pic: 'beach', s: 1.6 }] },
+    { type: 'R5',
+      pics: [
+        () => svg(bgPark() + person(250, 450, { kind: 'man', hairStyle: 'bald', hair: '#ddd', beard: true, glasses: true, shirt: '#8e44ad', legs: '#7f8c8d' }) + person(390, 455, { kind: 'girl', pose: 'holdR', hairStyle: 'pony', hair: '#7a4b25', shirt: '#f1c40f', legs: '#3b7dd8', item: { k: 'kite', c: '#e74c3c', s: 0.7, dy: 20 } })),
+        () => svg(bgPark() + tr(OBJ.tree(), 560, 340, 1.3) + tr(OBJ.kite('#e74c3c'), 600, 215, 0.9) + person(330, 455, { kind: 'girl', pose: 'point', mouth: 'sad', hairStyle: 'pony', hair: '#7a4b25', shirt: '#f1c40f', legs: '#3b7dd8' }) + person(210, 450, { kind: 'man', hairStyle: 'bald', hair: '#ddd', beard: true, glasses: true, shirt: '#8e44ad', legs: '#7f8c8d' })),
+        () => svg(bgPark() + tr(OBJ.tree(), 600, 340, 1.3) + person(420, 450, { kind: 'man', pose: 'holdR', hairStyle: 'bald', hair: '#ddd', beard: true, glasses: true, shirt: '#8e44ad', legs: '#7f8c8d', item: { k: 'kite', c: '#e74c3c', s: 0.8, dy: 22 } }) + person(290, 455, { kind: 'girl', pose: 'up', jump: true, mouth: 'open', hairStyle: 'pony', hair: '#7a4b25', shirt: '#f1c40f', legs: '#3b7dd8' }))
+      ],
+      examples: [{ pic: 0, q: 'Who is with the girl?', pre: 'her ', a: 'grandfather' }, { pic: 0, q: 'Where are they?', pre: 'in the ', a: 'park' }],
+      items: [
+        { pic: 0, q: 'What has the girl got?', pre: 'a ', ans: ['kite'] },
+        { pic: 0, q: 'What colour is the kite?', pre: 'It\'s ', ans: ['red'] },
+        { pic: 1, q: 'Where is the kite now?', pre: 'in the ', ans: ['tree'] },
+        { pic: 1, q: 'How does the girl feel?', pre: 'She\'s ', ans: ['sad'] },
+        { pic: 2, q: 'Who has got the kite now?', pre: 'the girl\'s ', ans: ['grandfather', 'grandpa', 'granddad', 'grandad', 'grandfather'] }
+      ] }
+  ]
+});
+
+/* =========================================================
+   TEST 3 - original content
+   ========================================================= */
+TESTS.push({
+  title: 'Test 3',
+  L: [
+    { /* PART 1 - garden / playground */
+      type: 'L1',
+      names: ['Kim', 'Bill', 'Pat', 'Mark', 'Ann', 'Tony', 'Alex'],
+      example: { name: 'Pat', target: 't0' },
+      answers: { Mark: 't1', Kim: 't2', Alex: 't3', Tony: 't4', Ann: 't5' },
+      scene: () => {
+        let s = bgGarden();
+        s += person(335, 335, { kind: 'woman', hairStyle: 'long', hair: '#7a4b25', shirt: '#16a085', dress: true, hat: { style: 'sun', c: '#e84393' }, s: 0.8, target: 't6' });
+        s += person(655, 335, { kind: 'girl', pose: 'holdR', hairStyle: 'long', hair: '#222', shirt: '#e74c3c', legs: '#34495e', item: { k: 'bag', c: '#f7d038', s: 0.8, dy: 26 }, s: 0.8, target: 't5' });
+        s += person(110, 465, { kind: 'girl', pose: 'hold', hairStyle: 'pony', hair: '#a0522d', shirt: '#3b7dd8', legs: '#2c3e50', item: { k: 'ball', c: '#e74c3c', s: 0.7 }, target: 't2' });
+        s += person(245, 472, { kind: 'boy', pose: 'hold', glasses: true, hair: '#222', shirt: '#f39c12', legs: '#34495e', item: { k: 'openBook', c: '#9b59b6', s: 0.6 }, target: 't3' });
+        s += person(425, 468, { kind: 'girl', pose: 'up', jump: true, hairStyle: 'curly', hair: '#5a3825', shirt: '#27ae60', dress: true, target: 't0' });
+        s += tr(OBJ.bench(), 565, 478, 1) + person(550, 434, { kind: 'boy', pose: 'sit', hair: '#f4d03f', shirt: '#9b59b6', legs: '#2c3e50', item: { k: 'banana', s: 0.55 }, target: 't1' });
+        s += person(740, 472, { kind: 'man', pose: 'wave', beard: true, hair: '#5a3825', shirt: '#3b7dd8', legs: '#7f8c8d', flip: true, target: 't4' });
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['F: Look at the girl who\'s jumping.', 'B: The girl in the green dress?', 'F: Yes. Her name is Pat.'] },
+        { label: '1', lines: ['B: Who\'s the boy on the bench?', 'F: The boy with the banana? That\'s Mark. He loves bananas.'] },
+        { label: '2', lines: ['F: Can you see the girl with the red ball?', 'B: Yes. What\'s her name?', 'F: Kim. She wants to play with her friends.'] },
+        { label: '3', lines: ['B: There\'s a boy with glasses.', 'F: Is he reading a book?', 'B: Yes. That\'s Alex. He likes reading.'] },
+        { label: '4', lines: ['F: Who\'s the man with the beard?', 'B: That\'s Tony. He\'s waving to us. Hello, Tony!'] },
+        { label: '5', lines: ['B: And look at that girl with the big bag.', 'F: The yellow bag? That\'s Ann.'] }
+      ]
+    },
+    { /* PART 2 */
+      type: 'L2',
+      pic: () => svg(bgRoom('#e8f1fb', '#d8b483') + windowAt(520, 60, 180, 130) + person(330, 460, { kind: 'woman', hairStyle: 'curly', hair: '#cfcfcf', glasses: true, shirt: '#8e44ad', dress: true }) +
+        person(450, 465, { kind: 'girl', pose: 'wave', hairStyle: 'pony', hair: '#222', shirt: '#f1c40f', legs: '#3b7dd8' }) + tr(OBJ.cat('#f39c12'), 590, 470, 1.2) + tr(OBJ.dog('#fff'), 170, 470, 1.2)),
+      examples: [{ q: 'What is the girl\'s name?', a: 'Jill' }, { q: 'How old is she?', a: '6' }],
+      items: [
+        { q: 'What is the name of Jill\'s baby brother?', ans: ['Nick'] },
+        { q: 'How many pets has Jill got?', ans: ['2'] },
+        { q: 'What is the name of Jill\'s street?', post: ' Street', ans: ['Bird'] },
+        { q: 'How many books has Jill got?', ans: ['15'] },
+        { q: 'What is the name of Jill\'s friend?', ans: ['Dan'] }
+      ],
+      segs: [
+        { label: 'Example', lines: ['M: Hello. What\'s your name?', 'G: I\'m Jill.', 'M: How do you spell Jill?', 'G: J. I. L. L.', 'M: And how old are you, Jill?', 'G: I\'m six.'] },
+        { label: '1', lines: ['M: Have you got a brother or a sister?', 'G: I\'ve got a baby brother. His name\'s Nick.', 'M: How do you spell that?', 'G: N. I. C. K.'] },
+        { label: '2', lines: ['M: Have you got any pets?', 'G: Yes. I\'ve got two pets, a cat and a dog.', 'M: Two pets. Lovely!'] },
+        { label: '3', lines: ['M: Where do you live, Jill?', 'G: In Bird Street.', 'M: Bird Street? B. I. R. D.?', 'G: Yes, that\'s right!'] },
+        { label: '4', lines: ['M: Do you like books?', 'G: Yes! I\'ve got fifteen books in my bedroom.', 'M: Fifteen? That\'s a lot!'] },
+        { label: '5', lines: ['M: And who\'s your friend?', 'G: My friend\'s name is Dan.', 'M: How do you spell Dan?', 'G: D. A. N.'] }
+      ]
+    },
+    { /* PART 3 */
+      type: 'L3',
+      items: [
+        { ex: true, q: 'What is Lucy\'s favourite colour?', opts: [one('tshirt', '#e74c3c', 2.2), one('tshirt', '#3b7dd8', 2.2), one('tshirt', '#27ae60', 2.2)], ans: 2 },
+        { q: 'What is Ben drawing?', opts: [one('house', '#f5e3c1', 1.2), one('tree', '#5aa845', 0.75), one('car', '#e74c3c', 1.5)], ans: 0 },
+        { q: 'Where is Mum?', opts: [
+            () => panel('<rect x="0" y="120" width="200" height="30" fill="#9fd67a"/>' + person(55, 146, { kind: 'woman', hairStyle: 'long', hair: '#7a4b25', shirt: '#e84393', dress: true, s: 0.62 }) + tr(OBJ.car('#3b7dd8'), 135, 142, 0.85)),
+            () => panel('<rect x="0" y="120" width="200" height="30" fill="#9fd67a"/>' + tr(OBJ.tree(), 140, 142, 0.7) + person(60, 146, { kind: 'woman', hairStyle: 'long', hair: '#7a4b25', shirt: '#e84393', dress: true, s: 0.62 })),
+            () => panel(floor + tr(OBJ.sofa('#c9a0dc'), 100, 140, 0.8) + person(88, 102, { kind: 'woman', pose: 'sit', hairStyle: 'long', hair: '#7a4b25', shirt: '#e84393', legs: '#34495e', s: 0.62 }))], ans: 2 },
+        { q: 'What does Alex want for lunch?', opts: [one('burger', '', 2), one('egg', '#fff8e7', 2.4), one('sandwich', '', 2)], ans: 0 },
+        { q: 'Which is Grace\'s bike?', opts: [one('bike', '#e74c3c', 1.6), one('bike', '#f7d038', 1.6), one('bike', '#3b7dd8', 1.6)], ans: 1 },
+        { q: 'How many birds are in the tree?', opts: [2, 3, 4].map(nb => () => panel(tr(OBJ.tree(), 100, 146, 0.8) + [[70, 66], [125, 60], [100, 40], [140, 82]].slice(0, nb).map(([x, y]) => tr(OBJ.bird('#3498db'), x, y, 0.6)).join(''))), ans: 1 }
+      ],
+      segs: [
+        { label: 'Example', lines: ['M: Is your favourite colour red, Lucy?', 'G: No. I like green.', 'M: Green?', 'G: Yes. My favourite T-shirt is green.'] },
+        { label: '1', lines: ['F: What are you drawing, Ben? Is it a tree?', 'B: No. It\'s my house.', 'F: Your house? It\'s very nice!'] },
+        { label: '2', lines: ['B: Dad, where\'s Mum? Is she in the garden?', 'M: No, she isn\'t.', 'B: Is she in the car?', 'M: No. She\'s sitting on the sofa. Look!'] },
+        { label: '3', lines: ['F: Do you want an egg for lunch, Alex?', 'B: No, thank you. Can I have a burger?', 'F: A burger? OK.'] },
+        { label: '4', lines: ['M: Is that your bike, Grace? The red one?', 'G: No. My bike is yellow.', 'M: Oh yes. It\'s very nice.'] },
+        { label: '5', lines: ['B: Look! There are birds in the tree.', 'F: How many birds are there?', 'B: One, two, three. Three birds!'] }
+      ]
+    },
+    { /* PART 4 - colour */
+      type: 'L4',
+      example: { id: 'boat', colour: 'red' },
+      answers: { bird: 'brown', fish: 'orange', ball: 'blue', hat: 'yellow', shell: 'pink' },
+      scene: () => {
+        let s = bgBeach();
+        s += col('boat', tr(OBJ.boat('#fff'), 560, 285, 1.1));
+        s += col('bird', tr(OBJ.bird('#fff'), 600, 259, 0.8));
+        s += col('bird2', tr(OBJ.bird('#fff'), 300, 110, 0.8));
+        s += col('fish', tr(OBJ.fish('#fff'), 230, 280, 1));
+        s += col('ball', tr(OBJ.ball('#fff'), 410, 290, 0.8));
+        s += tr(OBJ.chair('#3b7dd8'), 170, 455, 1) + col('hat', tr(OBJ.hat('#fff'), 170, 409, 0.9));
+        s += tr(OBJ.bag('#16a085'), 520, 470, 1.1) + col('shell', tr(OBJ.shell('#fff'), 590, 470, 1.3));
+        s += col('shell2', tr(OBJ.shell('#fff'), 330, 465, 1.3));
+        return svg(s);
+      },
+      segs: [
+        { label: 'Example', lines: ['F: Can you see the boat on the sea?', 'B: Yes, I can.', 'F: Colour it red, please.'] },
+        { label: '1', lines: ['B: There\'s a bird on the boat!', 'F: Yes. Colour it brown.', 'B: OK.'] },
+        { label: '2', lines: ['F: Now find the fish in the water.', 'B: I can see it.', 'F: Make it orange.'] },
+        { label: '3', lines: ['B: Can I colour the ball in the water?', 'F: Yes. Colour it blue.'] },
+        { label: '4', lines: ['F: Look at the chair. There\'s a hat on it.', 'B: What colour?', 'F: Yellow. Colour the hat yellow.'] },
+        { label: '5', lines: ['B: There are two shells.', 'F: Colour the shell next to the bag. Make it pink.'] }
+      ]
+    }
+  ],
+  R: [
+    { type: 'R1',
+      examples: [{ pic: 'pear', n: 2, text: 'These are pears.', ok: true }, { pic: 'bus', text: 'This is a bike.', ok: false, s: 0.9 }],
+      items: [
+        { pic: 'robot', text: 'This is a robot.', ok: true, s: 1.2 },
+        { pic: 'orange', n: 3, text: 'These are lemons.', ok: false },
+        { pic: 'boat', text: 'This is a boat.', ok: true, s: 0.9 },
+        { pic: 'bag', text: 'This is a hat.', ok: false, s: 1.5 },
+        { pic: 'shell', n: 3, text: 'These are shells.', ok: true, s: 1.3 }
+      ] },
+    { type: 'R2',
+      scene: () => {
+        let s = bgRoom() + windowAt(330, 60, 170, 120) + doorAt(590, 190, 70, 150);
+        s += tr(OBJ.sofa('#e59866'), 190, 445, 1);
+        s += person(165, 397, { kind: 'man', pose: 'sit', sleep: true, hair: '#222', shirt: '#3b7dd8', legs: '#34495e' });
+        s += tr(OBJ.cat('#7f8c8d'), 250, 397, 1);
+        s += tr(OBJ.lamp('#f7d038'), 330, 445, 1);
+        s += person(445, 462, { kind: 'girl', pose: 'hold', hairStyle: 'long', hair: '#a0522d', shirt: '#e84393', legs: '#34495e', item: { k: 'guitar', c: '#e67e22', s: 0.75 } });
+        s += tr(OBJ.desk('#c0874f'), 720, 470, 1) + tr(OBJ.tv(), 720, 406, 1);
+        s += person(600, 448, { kind: 'boy', pose: 'sit', hair: '#222', shirt: '#27ae60', legs: '#2c3e50' });
+        s += tr(OBJ.book('#e74c3c'), 50, 485, 0.6) + tr(OBJ.book('#3b7dd8'), 90, 485, 0.6) + tr(OBJ.book('#f1c40f'), 90, 466, 0.6) + tr(OBJ.book('#27ae60'), 50, 466, 0.6);
+        return svg(s);
+      },
+      examples: [{ t: 'The man is sleeping.', ans: 'yes' }, { t: 'There is a lamp on the table.', ans: 'no' }],
+      items: [
+        { t: 'The girl is playing the guitar.', ans: 'yes' },
+        { t: 'There is a cat on the sofa.', ans: 'yes' },
+        { t: 'The TV is under the window.', ans: 'no' },
+        { t: 'The boy has got a red T-shirt.', ans: 'no' },
+        { t: 'There are four books on the floor.', ans: 'yes' }
+      ] },
+    { type: 'R3',
+      example: { pic: 'cat', word: 'cat', s: 1.5 },
+      items: [{ pic: 'robot', word: 'robot', s: 1.3 }, { pic: 'apple', word: 'apple', s: 2 }, { pic: 'sock', word: 'sock', s: 2 }, { pic: 'chair', word: 'chair', s: 1 }, { pic: 'watch', word: 'watch', s: 2 }] },
+    { type: 'R4', title: 'Birds',
+      pic: () => svg(tr(OBJ.bird('#3498db'), 0, 0, 2.6), '-75 -95 150 100'),
+      text: 'Birds are [[*animals]]. There are lots of birds and they can be many colours. Lots of birds live in [[trees]] and they sing in the morning. Some birds eat [[fish]] and some eat fruit. Mother birds sit on their [[eggs]]. You can see big white birds at the [[beach]]. Can you hear birds in your [[garden]]?',
+      words: [{ w: 'animals', pic: 'cat', s: 1.4 }, { w: 'trees', pic: 'tree', s: 0.65 }, { w: 'beds', pic: 'bed', s: 0.6 }, { w: 'fish', pic: 'fish', s: 1.6 }, { w: 'eggs', pic: 'egg', s: 2.2 }, { w: 'pencils', pic: 'pencil', s: 1.5 }, { w: 'beach', pic: 'beach', s: 1.6 }, { w: 'garden', pic: 'garden', s: 1.6 }] },
+    { type: 'R5',
+      pics: [
+        () => svg(bgKitchen() + person(520, 470, { kind: 'woman', pose: 'hold', hairStyle: 'pony', hair: '#7a4b25', shirt: '#e74c3c', legs: '#34495e', item: { k: 'bowl', s: 0.8 }, s: 1.2 }) + person(370, 475, { kind: 'boy', pose: 'hold', hair: '#222', shirt: '#3b7dd8', legs: '#2c3e50', item: { k: 'egg', s: 0.8 }, s: 1.2 })),
+        () => svg(bgKitchen() + tr(OBJ.table('#c0874f'), 400, 470, 1.1) + tr(OBJ.cake('#f78fb3'), 400, 386, 1.4) + tr(OBJ.cat('#555'), 560, 470, 1.3)),
+        () => svg(bgKitchen() + tr(OBJ.table('#c0874f'), 400, 470, 1.1) + tr(OBJ.cake('#f78fb3'), 380, 386, 1.4) + tr(OBJ.cat('#555'), 440, 386, 1.2) + person(620, 465, { kind: 'woman', mouth: 'open', pose: 'up', hairStyle: 'pony', hair: '#7a4b25', shirt: '#e74c3c', legs: '#34495e' }) + person(160, 465, { kind: 'boy', mouth: 'open', hair: '#222', shirt: '#3b7dd8', legs: '#2c3e50' }))
+      ],
+      examples: [{ pic: 0, q: 'Where are the people?', pre: 'in the ', a: 'kitchen' }, { pic: 0, q: 'What is Mum making?', pre: 'a ', a: 'cake' }],
+      items: [
+        { pic: 0, q: 'Who is helping Mum?', pre: 'her ', ans: ['son', 'boy', 'child'] },
+        { pic: 1, q: 'What colour is the cake?', pre: 'It\'s ', ans: ['pink'] },
+        { pic: 1, q: 'What animal is next to the table?', pre: 'a ', ans: ['cat'] },
+        { pic: 2, q: 'Where is the cat now?', pre: 'on the ', ans: ['table'] },
+        { pic: 2, q: 'What is the cat eating?', pre: 'the ', ans: ['cake'] }
+      ] }
+  ]
+});
+
+</script>
+</body>
+</html>
